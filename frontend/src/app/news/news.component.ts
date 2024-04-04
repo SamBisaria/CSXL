@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class NewsComponent {
   public static Route = {
     path: 'news',
+    title: 'News',
     component: NewsComponent
   };
 }
