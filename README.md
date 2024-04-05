@@ -11,7 +11,7 @@ The Experience Labs' (XL) mission is to accelerate technical experience and buil
 * [Authentication, Authorization, and Permissions](docs/auth.md)
 * [Testing Tools](docs/testing.md)
 * [Debugging Tools](docs/debugging.md)
-* [Design Doc](DESIGN.md)
+* [Design Doc](docs/design.md)
 
 ## Feature Docs
 

@@ -27,6 +27,18 @@ Computer Science Organizations across campus are divided into disparate silos, w
 ### Wireframes / Mockups: 
 Include rough wireframes of your feature’s user interfaces for the most critical user stories, along with brief descriptions of what is going on. These can be hand-drawn, made in PowerPoint/KeyNote, or created with a tool like Figma. To see an example of a detailed wireframe Kris made this summer before building the drop-in feature, see this Figma board. You will notice the final implementation is not 1:1 with the original wireframe!
 
+
+Individuals can see all the list of all the news articles that have been published. 
+![image](https://github.com/comp423-24s/csxl-final-team-c4/assets/93228261/c6d65e96-186d-4fdd-8775-9bd15d62e9a2)
+
+
+They can click on an individual news article and see it in full length. Comments are at the bottom and Sally student can make a comment. 
+![image](https://github.com/comp423-24s/csxl-final-team-c4/assets/93228261/b3569986-9426-4f11-a8ad-570794f9a230)
+
+This is the form to create news articles.
+![image](https://github.com/comp423-24s/csxl-final-team-c4/assets/93228261/cd967676-1cce-47ca-97ec-aa3128f8f9b3)
+
+
 ### Technical Implementation Opportunities and Planning
 - #### Models:
   - Post:
