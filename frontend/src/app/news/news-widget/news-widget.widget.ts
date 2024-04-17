@@ -8,4 +8,5 @@ import { Post } from '../news.model';
 })
 export class NewsWidgetComponent {
   @Input() post!: Post;
+  constructor() {}
 }

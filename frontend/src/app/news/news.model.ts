@@ -11,7 +11,8 @@ export interface Post {
   modificationDate: Date;
   announcement: boolean; // Yes/No
   category?: string; // Boolean type thing as well?
-  upvoteObject: String; //There should be an upvote object
+  upvotes: number; //There should be an upvote object
+  downvotes: number;
 }
 
 export const posts: Post[] = [
@@ -28,7 +29,8 @@ export const posts: Post[] = [
     modificationDate: new Date('2023-01-02'),
     announcement: true,
     category: 'Technology',
-    upvoteObject: 'Upvote Object 1'
+    upvotes: 10,
+    downvotes: 2
   },
   {
     id: 2,
@@ -40,7 +42,8 @@ export const posts: Post[] = [
     publishDate: new Date('2023-02-01'),
     modificationDate: new Date('2023-02-02'),
     announcement: false,
-    upvoteObject: 'Upvote Object 2'
+    upvotes: 5,
+    downvotes: 1
   }
   // Add more sample posts
 ];

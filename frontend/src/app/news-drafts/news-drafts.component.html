@@ -1,0 +1,8 @@
+<div class="news-drafts">
+  <app-news-widget
+    *ngFor="let drafts of newsService.getAllPosts()"
+    [post]="drafts" />
+</div>
+<div class="timerbutton">
+  <a mat-raised-button routerLink="/newsform/edit/-1"> Create a new post </a>
+</div>
