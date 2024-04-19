@@ -10,7 +10,7 @@ import { NewsService } from '../news/news.service';
 export class NewsDraftsComponent {
   public static Route = {
     path: 'newsform',
-    title: 'News Form',
+    title: 'News Drafts',
     component: NewsDraftsComponent
   };
   constructor(public newsService: NewsService) {}

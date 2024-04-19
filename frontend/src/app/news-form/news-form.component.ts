@@ -25,7 +25,6 @@ export class NewsFormComponent {
     component: NewsFormComponent
   };
 
-  //implements oninit
   postForm: FormGroup | undefined;
   postModel: Post | undefined;
   public enabled$: Observable<boolean> | undefined;
@@ -83,10 +82,10 @@ export class NewsFormComponent {
       this.postForm?.controls['announcement'].value,
       this.postForm?.controls['synopsis'].value
     );
+    this.router.navigate(['/newsform']);
   }
   submitPost(): void {
     this.savePost();
-    this.router.navigate(['/news']);
   }
   d = new Date();
   currentTime = this.d.toLocaleTimeString();

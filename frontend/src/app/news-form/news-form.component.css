@@ -1,17 +1,19 @@
-/* General Styling */
 body {
     font-family: sans-serif; 
   }
-  
+
+  /* .back-button {
+    margin-bottom: 1px;
+  } */
+
   form {
-    background-color: #303030; /* Dark background */
-    color: white;            /* White text */
     padding: 20px;
   }
   
   h2 {
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 0px;
   }
   
   mat-form-field {
@@ -52,3 +54,6 @@ body {
   .actions button {
     margin: 0 10px;
   }
+
+  
+  

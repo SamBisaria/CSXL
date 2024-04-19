@@ -1,4 +1,4 @@
-<a mat-icon-button routerLink="/newsform">
+<a mat-icon-button routerLink="/newsform" class="back-button">
   <mat-icon>arrow_back</mat-icon>
 </a>
 
@@ -48,7 +48,13 @@
       Preview
     </button>
     <button mat-raised-button type="button" (click)="savePost()">Save</button>
-    <button mat-raised-button color="primary" type="submit">Post</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="(submitPost)">
+      Post
+    </button>
   </div>
 </form>
 <!-- <ng-template #unauthenticated>

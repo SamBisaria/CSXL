@@ -1,0 +1,38 @@
+.news-widget {
+    margin: 1em;
+    max-width: 640px;
+    position: relative;
+  }
+  
+  .mat-card-actions-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .mat-mdc-card-actions.mat-card-actions-top-right {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+  }
+  
+  .mat-mdc-card-actions .mdc-button {
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .mat-mdc-card-title a,
+  .mat-mdc-card-title a:hover,
+  .mat-mdc-card-title a:visited {
+    color: #fff;
+  }
+  
+  @media (prefers-color-scheme: light) {
+    .mat-mdc-card-title a,
+    .mat-mdc-card-title a:hover,
+    .mat-mdc-card-title a:visited {
+      color: #000;
+    }
+  }

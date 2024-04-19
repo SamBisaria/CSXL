@@ -17,6 +17,12 @@ export class NewsService {
     return this.newsPosts;
   }
 
+  getAllPostsByDate(): Post[] {
+    return this.newsPosts.sort((a, b) => {
+      return b.publishDate.getTime() - a.publishDate.getTime();
+    });
+  }
+
   getID(): number {
     return this.nextID;
   }
