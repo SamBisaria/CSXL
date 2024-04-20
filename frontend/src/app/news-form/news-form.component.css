@@ -1,0 +1,59 @@
+body {
+    font-family: sans-serif; 
+  }
+
+  /* .back-button {
+    margin-bottom: 1px;
+  } */
+
+  form {
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .file-upload {
+    margin-bottom: 15px;
+  }
+  
+  .file-upload input[type="file"] {
+    display: none; 
+  }
+  
+  .file-upload label {
+    background-color: #4CAF50; 
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  #file-name {
+    margin-left: 10px;
+  }
+  
+  .timestamp {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .actions {
+    text-align: center;
+  }
+  
+  .actions button {
+    margin: 0 10px;
+  }
+
+  
+  

@@ -42,6 +42,9 @@ import { GateComponent } from './gate/gate.component';
 import { ProfileEditorComponent } from './profile/profile-editor/profile-editor.component';
 import { SharedModule } from './shared/shared.module';
 import { NewsComponent } from './news/news.component';
+import { NewsFormComponent } from './news-form/news-form.component';
+import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
+import { NewsWidgetComponent } from './news/news-widget/news-widget.widget';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,10 @@ import { NewsComponent } from './news/news.component';
     AboutComponent,
     GateComponent,
     ProfileEditorComponent,
-    NewsComponent
+    NewsComponent,
+    NewsFormComponent,
+    NewsDraftsComponent,
+    NewsWidgetComponent
   ],
   imports: [
     /* Angular */

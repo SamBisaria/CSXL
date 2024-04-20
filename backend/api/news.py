@@ -18,7 +18,7 @@ openapi_tags = {
 
 
 @api.get("", response_model=list[NewsPost], tags=["News"])
-def get_organizations(
+def get_newsPosts(
     news_service: NewsService = Depends(),
 ) -> list[NewsPost]:
     """
@@ -32,4 +32,40 @@ def get_organizations(
     """
 
     # Return all organizations
-    return news_service.all()
+    return news_service.all_posts()
+
+
+@api.get("/{id}", response_model=list[NewsPost], tags=["News"])
+def get_newsPost(
+    id: int,
+    subject: User = Depends(registered_user),
+    news_service: NewsService = Depends(),
+) -> NewsPost:
+    return news_service.get_post(subject, id)
+
+
+@api.post("", response_model=list[NewsPost], tags=["News"])
+def create_newsPost(
+    newsPost: NewsPost,
+    subject: User = Depends(registered_user),
+    news_service: NewsService = Depends(),
+) -> NewsPost:
+    return news_service.add_post(subject, newsPost)
+
+
+@api.put("", response_model=list[NewsPost], tags=["News"])
+def update_newsPost(
+    newsPost: NewsPost,
+    subject: User = Depends(registered_user),
+    news_service: NewsService = Depends(),
+) -> NewsPost:
+    return news_service.update_post(subject, newsPost)
+
+
+@api.delete("/{id}", response_model=list[NewsPost], tags=["News"])
+def delete_newsPost(
+    id: int,
+    subject: User = Depends(registered_user),
+    news_service: NewsService = Depends(),
+) -> NewsPost:
+    return news_service.delete_post(subject, id)

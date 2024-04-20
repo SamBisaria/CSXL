@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { ProfileEditorComponent } from './profile/profile-editor/profile-editor.component';
 import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
+import { NewsFormComponent } from './news-form/news-form.component';
+import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
 
 const routes: Routes = [
   HomeComponent.Route,
@@ -13,6 +15,8 @@ const routes: Routes = [
   ProfileEditorComponent.Route,
   GateComponent.Route,
   NewsComponent.Route,
+  NewsFormComponent.Route,
+  NewsDraftsComponent.Route,
   {
     path: 'coworking',
     title: 'Cowork in the XL',

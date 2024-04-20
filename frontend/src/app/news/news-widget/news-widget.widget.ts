@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Post } from '../news.model';
+import { NewsService } from '../news.service';
 
 @Component({
   selector: 'app-news-widget',
@@ -8,4 +9,8 @@ import { Post } from '../news.model';
 })
 export class NewsWidgetComponent {
   @Input() post!: Post;
+  constructor(public newsService: NewsService) {}
+  deletePost(id: number) {
+    this.newsService.deletePost(id);
+  }
 }
