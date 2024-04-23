@@ -12,6 +12,7 @@ import { Profile, PublicProfile } from '../profile/profile.service';
 import { Organization } from '../organization/organization.model';
 import { PermissionService } from '../permission.service';
 import { NewsService } from '../news/news.service';
+import { NonNullAssert } from '@angular/compiler';
 
 @Component({
   selector: 'app-news-form',
@@ -28,6 +29,7 @@ export class NewsFormComponent {
   postForm: FormGroup | undefined;
   postModel: Post | undefined;
   public enabled$: Observable<boolean> | undefined;
+  isNew: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,15 +43,19 @@ export class NewsFormComponent {
     //     `organization/${this.organization!.id}`
     //   )
     //   .pipe(map((permission) => permission || this.profile?.role === 'admin'));
+    this.isNew = this.route.snapshot.paramMap.get('id') === '-1';
   }
 
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
     const newsIdFromRoute = routeParams.get('id');
-    if (newsIdFromRoute != null) {
-      this.postModel = this.newsService.getPostById(parseInt(newsIdFromRoute));
-    } else {
-      this.postModel = this.newsService.getPostById(-1);
+    if (newsIdFromRoute != '-1' && newsIdFromRoute != null) {
+      // this.postModel =
+      this.newsService
+        .getPostById(parseInt(newsIdFromRoute))
+        .subscribe((x: Post) => {
+          this.postModel = x;
+        });
     }
     this.postForm = this.formBuilder.group({
       headline: new FormControl(
@@ -58,10 +64,10 @@ export class NewsFormComponent {
       ),
       synopsis: new FormControl(this.postModel?.synopsis),
       mainStory: new FormControl(
-        this.postModel?.mainStory ?? '',
+        this.postModel?.main_story ?? '',
         Validators.required
       ),
-      organization: new FormControl(this.postModel?.organization),
+      organization: new FormControl(this.postModel?.organization_id),
       announcement: new FormControl(this.postModel?.announcement),
       category: new FormControl(this.postModel?.category)
     });
@@ -71,10 +77,7 @@ export class NewsFormComponent {
   savePost() {
     this.d = new Date();
     this.currentTime = this.d.toLocaleTimeString();
-    let id = this.postModel?.id;
-    if (!id || id === -1) {
-      id = this.newsService.getID();
-    }
+    let id = this.postModel?.id || null;
     this.newsService.buildPost(
       id,
       this.postForm?.controls['headline'].value,

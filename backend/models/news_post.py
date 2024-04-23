@@ -14,16 +14,17 @@ class NewsPost(BaseModel):
     """
 
     id: int | None = None
-    headline: str
-    synopsis: str
-    main_story: str
-    author: str
-    slug: str
-    state: str
-    image_url: str
-    publish_date: str
-    mod_date: str
-    announcement: bool
-    upvote: int
-    downvote: int
-    organization_id: str
+    headline: str = ""
+    synopsis: str = ""
+    main_story: str = ""
+    author: int = 0
+    slug: str = ""
+    state: str = ""
+    image_url: str = ""
+    publish_date: str = ""
+    mod_date: str = ""
+    announcement: bool = True
+    category: str = ""
+    upvote: int = 0
+    downvote: int = 0
+    organization_id: int = 1

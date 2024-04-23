@@ -1,38 +1,53 @@
 import { Injectable } from '@angular/core';
-import { Post, posts } from './news.model';
+import { Post, BackPost } from './news.model';
+import { Observable, OperatorFunction, ReplaySubject, map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
-  newsPosts: Post[];
-  nextID = 3;
+  private newsPosts: ReplaySubject<Post[]> = new ReplaySubject(1);
+  newsPosts$: Observable<Post[]> = this.newsPosts.asObservable();
+  //newsPosts: Post[];
+  nextID = null;
 
-  constructor() {
-    this.newsPosts = posts;
-    this.buildPost(-1, '', '', false);
+  constructor(protected http: HttpClient) {
+    this.newsPosts.next([]);
+  }
+  // We need to add getAllDrafts() and other equivalents for drafts, and replace these post things
+  getAllPosts() {
+    this.http
+      .get<Post[]>('/api/news/get')
+      .pipe(this.mapTimerResponseListToDataList)
+      .subscribe((posts) => this.newsPosts.next(posts));
+  }
+  getAllDrafts() {
+    this.http
+      .get<Post[]>('/api/news/draft/get')
+      .pipe(this.mapTimerResponseListToDataList)
+      .subscribe((posts) => this.newsPosts.next(posts));
   }
 
-  getAllPosts(): Post[] {
-    return this.newsPosts;
+  getAllPostsByDate() {
+    this.http
+      .get<Post[]>('/api/news/date')
+      .pipe(this.mapTimerResponseListToDataList)
+      .subscribe((posts) => this.newsPosts.next(posts));
   }
 
-  getAllPostsByDate(): Post[] {
-    return this.newsPosts.sort((a, b) => {
-      return b.publishDate.getTime() - a.publishDate.getTime();
-    });
-  }
-
-  getID(): number {
+  getID() {
     return this.nextID;
   }
 
-  getPostById(id: number): Post | undefined {
-    return this.newsPosts.find((post) => post.id === id);
+  getPostById(id: number): Observable<Post> {
+    return this.http
+      .get<BackPost>('/api/news/get/' + id)
+      .pipe(this.mapPostResponseToData);
   }
 
   public buildPost(
-    id: number,
+    id: number | null,
     headline: string,
     mainStory: string,
     announcement: boolean,
@@ -42,50 +57,74 @@ export class NewsService {
       window.alert('Error: One or more fields is invalid!');
       return;
     }
-    if (id === -1 || !this.getPostById(id)) {
-      id = this.nextID;
-      this.nextID++;
-    }
+    // if (id === -1 || !this.getPostById(id)) {
+    //   id = this.nextID;
+    //   this.nextID++;
+    // }
     const postData: Post = {
       id,
       headline,
-      mainStory,
       synopsis,
-      author: '',
-      state: 'Draft',
+      main_story: mainStory,
+      author: 0,
       slug: '',
-      publishDate: new Date(),
-      modificationDate: new Date(),
-      announcement,
+      state: 'Draft',
+      image_url: '',
+      publish_date: '',
+      mod_date: '',
+      announcement: announcement || false,
+      category: '',
       upvotes: 0,
-      downvotes: 0
+      downvotes: 0,
+      organization_id: 1
     };
-
-    if (
-      this.getPostById(id) !== null &&
-      this.getPostById(id) !== undefined &&
-      id !== -1
-    ) {
-      this.updatePost(postData);
+    if (id === null) {
+      this.addPost(postData).subscribe((post) => {});
     } else {
-      this.addPost(postData);
+      this.updatePost(postData).subscribe((put) => {});
     }
   }
 
-  addPost(newPost: Post): void {
-    this.newsPosts.push(newPost);
+  addPost(newPost: Post): Observable<Post> {
+    return this.http.post<Post>('/api/news/draft/post', newPost);
   }
 
-  deletePost(id: number): void {
-    this.newsPosts = this.newsPosts.filter((post) => post.id !== id);
+  deletePost(id: number): Observable<any> {
+    return this.http.delete(`/api/news/delete/${id}`);
   }
 
-  updatePost(updatedPost: Post): void {
-    const index = this.newsPosts.findIndex(
-      (post) => post.id === updatedPost.id
+  updatePost(updatedPost: Post): Observable<Post> {
+    return this.http
+      .put<BackPost>('/api/news/draft/edit', updatedPost)
+      .pipe(this.mapPostResponseToData);
+  }
+
+  private mapTimerResponseListToDataList: OperatorFunction<BackPost[], Post[]> =
+    map((responses) =>
+      responses.map((response) => this.postResponseToData(response))
     );
-    if (index !== -1) {
-      this.newsPosts[index] = updatedPost;
-    }
+
+  private mapPostResponseToData: OperatorFunction<BackPost, Post> = map(
+    this.postResponseToData
+  );
+
+  postResponseToData(response: BackPost): Post {
+    return {
+      id: response.id,
+      headline: response.headline,
+      synopsis: response.synopsis || '', // Optional property with default value
+      main_story: response.main_story,
+      author: response.author,
+      state: response.state,
+      slug: response.slug,
+      publish_date: response.publish_date,
+      mod_date: response.mod_date,
+      announcement: response.announcement,
+      category: response.category || '', // Optional property with default value
+      upvotes: response.upvotes,
+      downvotes: response.downvotes,
+      organization_id: response.organization_id || 1
+      // Optional property with default value
+    };
   }
 }

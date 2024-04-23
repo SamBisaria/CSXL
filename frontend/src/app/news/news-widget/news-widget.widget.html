@@ -5,7 +5,7 @@
         <a mat-icon-button routerLink="/newsform/edit/{{ post.id }}">
           <mat-icon>edit</mat-icon>
         </a>
-        <a mat-icon-button (click)="deletePost(post.id)">
+        <a mat-icon-button (click)="deletePost(post.id!)">
           <mat-icon>delete</mat-icon>
         </a>
       </mat-card-actions>
@@ -15,10 +15,10 @@
   </mat-card-header>
   <mat-card-content>
     <p>{{ post.synopsis }}</p>
-    <p>{{ post.mainStory }}</p>
+    <p>{{ post.main_story }}</p>
     <p>
       <strong>Last Modified:</strong>
-      {{ post.modificationDate | date: 'medium' }}
+      <!--{{ post.modificationDate | date: 'medium' }}-->
     </p>
   </mat-card-content>
 </mat-card>

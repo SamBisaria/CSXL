@@ -13,5 +13,8 @@ export class NewsDraftsComponent {
     title: 'News Drafts',
     component: NewsDraftsComponent
   };
-  constructor(public newsService: NewsService) {}
+  constructor(public newsService: NewsService) {
+    //this.newsService.deletePost(3); //Band-aid fix to remove the post with id 3
+    this.newsService.getAllDrafts();
+  }
 }

@@ -1,7 +1,11 @@
 """Definition of SQLAlchemy table-backed object mapping entity for Organizations."""
 
-from sqlalchemy import ForeignKey, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from backend.models.news_comments import NewsCommentsUser
+from backend.models.news_comments_no_user import NewsComments
+from backend.models.user import User
 from .entity_base import EntityBase
 from typing import Self
 from ..models.news_post import NewsPost
@@ -15,7 +19,7 @@ class CommentEntity(EntityBase):
     """Serves as the database model schema defining the shape of the `Organization` table"""
 
     # Name for the organizations table in the PostgreSQL database
-    __tablename__ = "news_post"
+    __tablename__ = "news_comments"
 
     # Organization properties (columns in the database table)
 
@@ -24,33 +28,25 @@ class CommentEntity(EntityBase):
     # Name of the organization
     content: Mapped[str] = mapped_column(String, nullable=False, default="")
     # Short hand name of the organization
-    upvote: Mapped[str] = mapped_column(String, nullable=False)
-    # Slug of the organization
-    downvote: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    # Logo of the organization
-    children: Mapped[str] = mapped_column(String)
-    # Short description of the organization
-    # Long description of the organization
-    # Website of the organization
-    upvote_users: Mapped[str] = mapped_column(String)
-    # Contact email for the organization
-    downvote_users: Mapped[str] = mapped_column(String)
-    # Instagram username for the organization
+    upvote: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    downvote: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     publish_date: Mapped[str] = mapped_column(String)
-    # LinkedIn for the organization
     mod_date: Mapped[str] = mapped_column(String)
-    # YouTube for the organization
 
-    # NOTE: This field establishes a one-to-many relationship between the organizations and events table.
+    # all of the foreign key mapping
+    # the way this works is if the parent comment is null, then the post has to be populated, and
+    # if the post is null then it has to have a parent comment.
+    parent_comment: Mapped[int] = mapped_column(
+        ForeignKey("news_comments.id"), nullable=True
+    )
+
+    parent_post: Mapped[int] = mapped_column(ForeignKey("news_post.id"), nullable=True)
+
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user: Mapped["UserEntity"] = relationship(back_populates="posts")
+    # figure out if we want thi later:
+    # user: Mapped["UserEntity"] = relationship(back_populates="posts")
 
-    children: Mapped[list["CommentEntity"]] = relationship(
-        back_populates="organization", cascade="all,delete"
-    )
-    upvote_users: Mapped[list["UserEntity"]] = relationship(
-        back_populates="organization", cascade="all,delete"
-    )
+    users: Mapped[list["UserCommentAssociation"]] = relationship(backref="comments")
 
     @classmethod
     def from_model(cls, model: NewsPost) -> Self:
@@ -64,41 +60,79 @@ class CommentEntity(EntityBase):
         """
         return cls(
             id=model.id,
-            headline=model.headline,
-            synopsis=model.synopsis,
-            main_story=model.main_story,
-            author=model.author,
-            slug=model.slug,
-            state=model.state,
-            image_url=model.image_url,
-            publish_date=model.publish_date,
-            mod_date=model.mod_date,
-            announcement=model.announcement,
+            content=model.content,
             upvote=model.upvote,
             downvote=model.downvote,
-            organization_id=model.organization_id,
+            publish_date=model.publish_date,
+            mod_date=model.mod_date,
+            parent_comment=model.parent_comment,
+            parent_post=model.parent_post,
+            user_id=model.user_id,
+            upvote_users=model.upvote_users,
         )
 
-    def to_model(self) -> NewsPost:
+    def from_model_user(cls, model: NewsPost) -> Self:
+        """
+        Class method that converts an `Organization` model into a `OrganizationEntity`
+
+        Parameters:
+            - model (Organization): Model to convert into an entity
+        Returns:
+            OrganizationEntity: Entity created from model
+        """
+        return cls(
+            id=model.id,
+            content=model.content,
+            upvote=model.upvote,
+            downvote=model.downvote,
+            publish_date=model.publish_date,
+            mod_date=model.mod_date,
+            parent_comment=model.parent_comment,
+            parent_post=model.parent_post,
+            user_id=model.user_id,
+            upvote_users=model.upvote_users,
+            users=[
+                user_comment_association.UserCommentAssociation.from_model(
+                    i, model.id, k
+                )
+                for i, k in model.comment_users
+            ],
+        )
+
+    def to_model_user_data(self) -> NewsComments:
         """
         Converts a `OrganizationEntity` object into a `Organization` model object
 
         Returns:
             Organization: `Organization` object from the entity
         """
-        return NewsPost(
+        return NewsCommentsUser(
             id=self.id,
-            headline=self.headline,
-            synopsis=self.synopsis,
-            main_story=self.main_story,
-            author=self.author,
-            slug=self.slug,
-            state=self.state,
-            image_url=self.image_url,
-            publish_date=self.pub_date,
-            mod_date=self.mod_date,
-            announcement=self.announcement,
+            content=self.content,
             upvote=self.upvote,
             downvote=self.downvote,
-            organization_id=self.organization_id,
+            publish_date=self.publish_date,
+            mod_date=self.mod_date,
+            parent_comment=self.parent_comment,
+            parent_post=self.parent_post,
+            user_id=self.user_id,
+            comment_users={i.get_user(): i.get_score for i in self.users},
+        )
+
+    def to_model_normal(self) -> NewsComments:
+        """
+        Converts a `CommentEntity` object into a `NewsComments` model object
+
+        Returns:
+        """
+        return NewsComments(
+            id=self.id,
+            content=self.content,
+            upvote=self.upvote,
+            downvote=self.downvote,
+            publish_date=self.publish_date,
+            mod_date=self.mod_date,
+            parent_comment=self.parent_comment,
+            parent_post=self.parent_post,
+            user_id=self.user_id,
         )

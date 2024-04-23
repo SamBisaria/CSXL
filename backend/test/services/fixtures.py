@@ -3,6 +3,8 @@
 import pytest
 from unittest.mock import create_autospec
 from sqlalchemy.orm import Session
+
+from backend.services.news import NewsService
 from ...services import (
     PermissionService,
     UserService,
@@ -61,3 +63,9 @@ def event_svc_integration(session: Session, user_svc_integration: UserService):
 def room_svc(session: Session):
     """RoomService fixture."""
     return RoomService(session, PermissionService(session))
+
+
+@pytest.fixture()
+def news_svc(session: Session):
+    """This mocks the PermissionService class to avoid testing its implementation here."""
+    return NewsService(session, PermissionService(session))

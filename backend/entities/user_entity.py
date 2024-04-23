@@ -47,7 +47,12 @@ class UserEntity(EntityBase):
     accepted_community_agreement: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=False
     )
-
+    """posts: Mapped[list["UserPostAssociation"]] = relationship(
+         back_populates="users"
+    )
+    comments: Mapped[list["UserCommentAssociation"]] = relationship(
+         back_populates="users"
+    )"""
     # All of the roles for the given user.
     # NOTE: This field establishes a many-to-many relationship between the users and roles table.
     #       and uses the "user_role" table as the join table.

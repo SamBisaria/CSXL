@@ -3,6 +3,6 @@
 </div>
 <div class="news-drafts">
   <app-news-widget
-    *ngFor="let drafts of newsService.getAllPostsByDate()"
+    *ngFor="let drafts of newsService.newsPosts$ | async"
     [post]="drafts" />
 </div>

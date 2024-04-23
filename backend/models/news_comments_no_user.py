@@ -7,7 +7,7 @@ __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
 
-class NewsCommentsUser(BaseModel):
+class NewsComments(BaseModel):
     """
     Pydantic model to represent an `News Posts`.
 
@@ -25,5 +25,3 @@ class NewsCommentsUser(BaseModel):
     parent_comment: int
     parent_post: int
     user_id: int
-
-    comment_users: dict[int, int]

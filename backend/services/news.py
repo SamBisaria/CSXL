@@ -2,12 +2,16 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from backend.entities.post_entity import PostEntity
+from backend.entities.user_post_association import UserPostAssociation
+
 from ..database import db_session
-from ..models.news_comments import NewsComments
+
+# from ..models.news_comments import NewsComments
 from ..models.news_post import NewsPost
+from ..models import news_post
 from ..models import User
 from .permission import PermissionService
-from ..entities.news_entity import NewsPostEntity
 
 from .exceptions import ResourceNotFoundException
 
@@ -23,23 +27,225 @@ class NewsService:
         session: Session = Depends(db_session),
         permission: PermissionService = Depends(),
     ):
-        """Initializes the `OrganizationService` session, and `PermissionService`"""
+        """Initializes the `NewsService` session, and `PermissionService`"""
         self._session = session
         self._permission = permission
 
-    def all_posts():
-        query = select(NewsPost)
+    """
+    THE BELOW METHODS ARE ALL FOR POSTS BEING CURRENTLY 
+    BEING EDITED/WORKED ON
+    """
+
+    def get_drafts(self, subject: User):
+        query = select(PostEntity).where(
+            PostEntity.state == "draft", PostEntity.creation_author_id == subject.id
+        )
+        entities = self._session.scalars(query).all()
+        if entities is None:
+            raise ResourceNotFoundException(
+                f"No News Post found"
+            )  # Convert entries to a model and return
+        return [entity.to_model() for entity in entities]
+
+    def get_draft(self, subject: User, post_id: int):
+        query = select(PostEntity).where(
+            PostEntity.state == "draft",
+            PostEntity.creation_author_id == subject.id,
+            PostEntity.id == post_id,
+        )
+        obj = self._session.scalar(query)
+        # Ensure object exists
+        if obj is None or obj.creation_author_id != subject.id:
+            raise ResourceNotFoundException(
+                f"No News Post found with matching id: {post_id}"
+            )
+        return obj.to_model()
+
+    def add_post_draft(self, subject: User, newsPost: NewsPost):
+
+        obj = (
+            self._session.query(PostEntity)
+            .filter(PostEntity.id == newsPost.id)
+            .one_or_none()
+        )
+
+        while obj is not None:
+            newsPost.id += 1
+            obj = (
+                self._session.query(PostEntity)
+                .filter(PostEntity.id == newsPost.id)
+                .one_or_none()
+            )
+        newsPost.author = subject.id
+        newsPost.state = "draft"
+        postEntity = PostEntity.from_model(newsPost)
+        self._session.add(postEntity)
+        self._session.commit()
+        return postEntity.to_model()
+
+    def update_post(self, subject: User, post: NewsPost):
+
+        obj = self._session.get(PostEntity, post.id)
+
+        if subject.id == obj.creation_author_id:
+            obj = PostEntity.from_model(post)
+            self._session.commit()
+
+        # Check if result is null
+        if obj is None:
+            raise ResourceNotFoundException(
+                f"No organization found with matching ID: {post.id}"
+            )
+        # Return updated object
+        return obj.to_model()
+
+    def publish_post(self, subject: User, post_id: int):
+
+        obj = self._session.get(PostEntity, post_id)
+
+        # Check if result is null
+        if obj is None or subject.id != obj.creation_author_id:
+            raise ResourceNotFoundException(
+                f"No organization found with matching ID: {post_id}"
+            )
+        # Return updated object
+        obj.state = "published"
+
+        self._session.commit()
+
+        return obj.to_model()
+
+    def delete_post(self, subject: User, post_id: int):
+        obj = (
+            self._session.query(PostEntity)
+            .filter(
+                PostEntity.id == post_id, PostEntity.creation_author_id == subject.id
+            )
+            .one_or_none()
+        )
+        # Ensure object exists
+        if obj is None:
+            raise ResourceNotFoundException(
+                f"No News Post found with matching id: {post_id}"
+            )
+        # Delete object and commit
+        self._session.delete(obj)
+        # Save changes
+        self._session.commit()
+        return obj.to_model()
+
+    """
+    THE BELOW METHODS ARE FOR POSTS THAT ARE 
+    GOING TO BE DISPLAYED PUBLICLY
+    """
+
+    def like_post(self, subject: User, post_slug: str):
+        querypost = select(PostEntity).where(PostEntity.slug == post_slug)
+        post = self._session.scalar(querypost)
+        queryassoc = (
+            select(UserPostAssociation)
+            .where(
+                UserPostAssociation.news_post == post.id,
+                UserPostAssociation.user == subject.id,
+            )
+            .limit(1)
+        )
+
+        rel = self._session.scalar(queryassoc)
+
+        if post is None or post.state != "published":
+            raise ResourceNotFoundException(
+                f"No News Post found with matching id: {post.id}"
+            )
+        if rel is None:
+            obj = UserPostAssociation(news_post=post.id, user=subject.id, score=1)
+            self._session.add(obj)
+            post.upvote += 1
+
+        elif rel.score == 0:
+            post.upvote += 1
+            rel.score = 1
+        elif rel.score == 1:
+            post.upvote -= 1
+            rel.score = 0
+        elif rel.score == -1:
+            post.upvote += 1
+            post.downvote -= 1
+            rel.score = 1
+
+        self._session.commit()
+        return self._session.scalar(querypost).to_model()
+
+    def dislike_post(self, subject: User, post_slug: str):
+        querypost = select(PostEntity).where(PostEntity.slug == post_slug)
+        post = self._session.scalar(querypost)
+        queryassoc = (
+            select(UserPostAssociation)
+            .where(
+                UserPostAssociation.news_post == post.id,
+                UserPostAssociation.user == subject.id,
+            )
+            .limit(1)
+        )
+        rel = self._session.scalar(queryassoc)
+
+        if post is None or post.state != "published":
+            raise ResourceNotFoundException(
+                f"No News Post found with matching id: {post.id}"
+            )
+        if rel is None:
+            obj = UserPostAssociation(news_post=post.id, user=subject.id, score=-1)
+            self._session.add(obj)
+            post.downvote += 1
+        elif rel.score == 0:
+            post.downvote += 1
+            rel.score = -1
+        elif rel.score == -1:
+            post.downvote -= 1
+            rel.score = 0
+        elif rel.score == 1:
+            post.upvote -= 1
+            post.downvote += 1
+            rel.score = -1
+
+        self._session.commit()
+        return post.to_model()
+
+    def get_posts(self):
+        query = select(PostEntity).where(PostEntity.state == "finished")
+        entities = self._session.scalars(query).all()
+        if entities is None:
+            raise ResourceNotFoundException(
+                f"No News Post found"
+            )  # Convert entries to a model and return
+        return [entity.to_model() for entity in entities]
+
+    def get_posts_by_date(self):
+        query = (
+            select(PostEntity)
+            .where(PostEntity.state == "finished")
+            .order_by(PostEntity.pub_date.desc())
+        )
+        entities = self._session.scalars(query).all()
+        if entities is None:
+            raise ResourceNotFoundException(
+                f"No News Post found"
+            )  # Convert entries to a model and return
+        return [entity.to_model() for entity in entities]
+
+    def get_popular_posts(self, subject: User, page_num: int):
+        query = (
+            select(PostEntity)
+            .where(state="finished", author=subject.id)
+            .order_by(PostEntity.upvote)
+        )
         entities = self._session.scalars(query).all()
 
         # Convert entries to a model and return
         return [entity.to_model() for entity in entities]
 
     def get_post(self, subject: User, id: int):
-        obj = (
-            self._session.query(NewsPostEntity)
-            .filter(NewsPostEntity.id == id)
-            .one_or_none()
-        )
+        obj = self._session.query(PostEntity).filter(PostEntity.id == id).one_or_none()
 
         # Ensure object exists
         if obj is None:
@@ -50,14 +256,30 @@ class NewsService:
         return obj.to_model()
 
     def add_post(self, subject: User, newsPost: NewsPost):
-        postEntity = NewsPostEntity.from_model(newsPost)
+
+        obj = (
+            self._session.query(PostEntity)
+            .filter(PostEntity.id == newsPost.id)
+            .one_or_none()
+        )
+        while obj is not None:
+            newsPost.id += 1
+            obj = (
+                self._session.query(PostEntity)
+                .filter(PostEntity.id == newsPost.id)
+                .one_or_none()
+            )
+        newsPost.author = subject.id
+        newsPost.state = "published"
+
+        postEntity = PostEntity.from_model(newsPost)
+        postEntity.users = []
         self._session.add(postEntity)
         self._session.commit()
-
         return postEntity.to_model()
 
     def update_post(self, subject: User, newsPost: NewsPost):
-        obj = self._session.get(NewsPostEntity, newsPost.id)
+        obj = self._session.get(PostEntity, newsPost.id)
 
         # Check if result is null
         if obj is None:
@@ -69,11 +291,11 @@ class NewsService:
         obj.headline = newsPost.headline
         obj.synopsis = newsPost.synopsis
         obj.main_story = newsPost.main_story
-        obj.author = newsPost.author
+        obj.creation_author_id = newsPost.author
         obj.slug = newsPost.slug
         obj.state = newsPost.state
         obj.image_url = newsPost.image_url
-        obj.publish_date = newsPost.publish_date
+        obj.pub_date = newsPost.publish_date
         obj.mod_date = newsPost.mod_date
         obj.announcement = newsPost.announcement
         obj.upvote = newsPost.upvote
@@ -88,14 +310,10 @@ class NewsService:
 
     def delete_post(self, subject: User, id: int):
 
-        obj = (
-            self._session.query(NewsPostEntity)
-            .filter(NewsPostEntity.id == id)
-            .one_or_none()
-        )
+        obj = self._session.query(PostEntity).filter(PostEntity.id == id).one_or_none()
 
         # Ensure object exists
-        if obj is None:
+        if obj is None or subject.id != obj.creation_author_id:
             raise ResourceNotFoundException(
                 f"No News Post found with matching id: {id}"
             )

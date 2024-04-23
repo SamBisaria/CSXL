@@ -1,13 +1,11 @@
 from pydantic import BaseModel
 
-from backend.models.user import User
-
 __authors__ = ["Ajay Gandecha", "Jade Keegan", "Brianna Ta", "Audrey Toney"]
 __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
 
-class NewsCommentsUser(BaseModel):
+class NewsPostUsers(BaseModel):
     """
     Pydantic model to represent an `News Posts`.
 
@@ -16,14 +14,18 @@ class NewsCommentsUser(BaseModel):
     """
 
     id: int | None = None
-    content: str
-    upvote: int
-    downvote: int
+    headline: str
+    synopsis: str
+    main_story: str
+    author: str
+    slug: str
+    state: str
+    image_url: str
     publish_date: str
     mod_date: str
-
-    parent_comment: int
-    parent_post: int
-    user_id: int
-
-    comment_users: dict[int, int]
+    announcement: bool
+    category: str
+    upvote: int
+    downvote: int
+    organization_id: str
+    post_users: dict[int, int]

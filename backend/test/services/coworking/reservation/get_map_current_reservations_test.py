@@ -53,7 +53,7 @@ def test_transform_date_map_for_unavailable_simple(reservation_svc: ReservationS
     accurately reflects these unavailable slots, enhancing the user experience by
     preventing double bookings.
     """
-    
+
     sample_date_map_1 = {
         'SN135': [0, 0, 0, 0],
         'SN137': [0, 0, 4, 4],
@@ -70,7 +70,7 @@ def test_transform_date_map_for_unavailable_simple(reservation_svc: ReservationS
     assert sample_date_map_1 == expected_transformed_date_map_1
 
 
-def test_transform_date_map_for_unavailable_complex(reservation_svc: ReservationService):    
+def test_transform_date_map_for_unavailable_complex(reservation_svc: ReservationService):
     sample_date_map_2 = {
         'SN135': [0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
         'SN137': [0, 0, 1, 1, 4, 4, 4, 4, 0, 0],
@@ -112,15 +112,17 @@ def test_round_idx_calculation(reservation_svc: ReservationService):
     assert rounded_time.hour == 10 and rounded_time.minute == 0
     assert rounded_time2.hour == 18 and rounded_time2.minute == 0
     assert rounded_time3.hour == 10 and rounded_time3.minute == 30
-    assert rounded_time4.hour == 18 and rounded_time4.minute == 0 
+    assert rounded_time4.hour == 18 and rounded_time4.minute == 0
+
 
 def test_query_confirmed_reservations_by_date_and_room(
-    reservation_svc: ReservationService, time: dict[str, datetime]
+        reservation_svc: ReservationService, time: dict[str, datetime]
 ):
     """Test getting all reservations for a particular date."""
     reservations = reservation_svc._query_confirmed_reservations_by_date_and_room(time[NOW], None)
     assert True
     #TODO: Add in better assert statements here. 
+
 
 def test_get_reservable_rooms(reservation_svc: ReservationService):
     # Hardcoded for now, and this might change depending on which rooms are labeled as reservable.
@@ -139,7 +141,7 @@ def test_query_xl_reservations_by_date_for_user(reservation_svc: ReservationServ
 
 
 def test_get_map_reserved_times_by_date(
-    reservation_svc: ReservationService, time: dict[str, datetime]
+        reservation_svc: ReservationService, time: dict[str, datetime]
 ):
     """Test for getting a dictionary where keys are room ids and time slots array are values.
     
@@ -154,10 +156,10 @@ def test_get_map_reserved_times_by_date(
     )
 
     expected_date_map = {
-        'SN135' : [3, 3, 3, 3, 3],
-        'SN137' : [4, 4, 4, 4, 3],
-        'SN139' : [3, 3, 3, 3, 3],
-        'SN141' : [3, 3, 3, 3, 3]
+        'SN135': [3, 3, 3, 3, 3],
+        'SN137': [4, 4, 4, 4, 3],
+        'SN139': [3, 3, 3, 3, 3],
+        'SN141': [3, 3, 3, 3, 3]
     }
 
     assert reservation_details.reserved_date_map == expected_date_map

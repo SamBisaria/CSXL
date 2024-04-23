@@ -1,21 +1,40 @@
 export interface Post {
-  id: number;
+  id: number | null;
   headline: string;
   synopsis?: string; // Optional
-  mainStory: string;
-  author: String; // Change type to user
-  organization?: String; // Change type to organization?
-  state: String; // Boolean type thing? Draft, Published.
+  main_story: string;
+  author: number; // Change type to user
   slug: string;
-  publishDate: Date;
-  modificationDate: Date;
+  state: String; // Boolean type thing? Draft, Published.
+  image_url?: string;
+  publish_date: String;
+  mod_date: String;
   announcement: boolean; // Yes/No
   category?: string; // Boolean type thing as well?
   upvotes: number; //There should be an upvote object
   downvotes: number;
+  organization_id?: number; // Change type to organization?
 }
 
-export const posts: Post[] = [
+export interface BackPost {
+  id: number | null;
+  headline: string;
+  synopsis?: string; // Optional
+  main_story: string;
+  author: number; // Change type to user
+  slug: string;
+  state: String; // Boolean type thing? Draft, Published.
+  image_url?: string;
+  publish_date: String;
+  mod_date: String;
+  announcement: boolean; // Yes/No
+  category?: string; // Boolean type thing as well?
+  upvotes: number; //There should be an upvote object
+  downvotes: number;
+  organization_id?: number; // Change type to organization?
+}
+
+/*export const posts: Post[] = [
   {
     id: 1,
     headline: 'New Technology Trends',
@@ -25,8 +44,8 @@ export const posts: Post[] = [
     organization: 'Tech Company',
     state: 'Draft',
     slug: 'new-technology-trends',
-    publishDate: new Date('2023-01-01'),
-    modificationDate: new Date('2023-01-02'),
+    publishDate: '2023-01-01',
+    modificationDate: '2023-01-02',
     announcement: true,
     category: 'Technology',
     upvotes: 10,
@@ -39,11 +58,12 @@ export const posts: Post[] = [
     author: 'Jane Smith',
     state: 'Draft',
     slug: 'covid-19-updates',
-    publishDate: new Date('2023-02-01'),
-    modificationDate: new Date('2023-02-02'),
+    publishDate: '2023-02-01',
+    modificationDate: '2023-02-02',
     announcement: false,
     upvotes: 5,
     downvotes: 1
   }
   // Add more sample posts
 ];
+*/

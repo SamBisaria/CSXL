@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NewsService } from './news.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-news',
@@ -11,4 +13,12 @@ export class NewsComponent {
     title: 'News',
     component: NewsComponent
   };
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    public newsService: NewsService
+  ) {
+    this.newsService.getAllPosts();
+  }
 }

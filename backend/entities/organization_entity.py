@@ -2,6 +2,7 @@
 
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from .entity_base import EntityBase
 from typing import Self
 from ..models.organization import Organization
@@ -48,6 +49,10 @@ class OrganizationEntity(EntityBase):
     heel_life: Mapped[str] = mapped_column(String)
     # Whether the organization can be joined by anyone or not
     public: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
+    # posts: Mapped[list["PostEntity"]] = relationship(
+    #    back_populates="organization", cascade="all,delete"
+    # )
 
     # NOTE: This field establishes a one-to-many relationship between the organizations and events table.
     events: Mapped[list["EventEntity"]] = relationship(

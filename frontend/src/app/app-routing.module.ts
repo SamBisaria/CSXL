@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppTitleStrategy } from './app-title.strategy';
 import { GateComponent } from './gate/gate.component';
 import { HomeComponent } from './home/home.component';
-import { ProfileEditorComponent } from './profile/profile-editor/profile-editor.component';
 import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { NewsFormComponent } from './news-form/news-form.component';
 import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
+import { NewsPageComponent } from './news-page/news-page.component';
 
 const routes: Routes = [
   HomeComponent.Route,
@@ -16,6 +16,7 @@ const routes: Routes = [
   NewsComponent.Route,
   NewsFormComponent.Route,
   NewsDraftsComponent.Route,
+  NewsPageComponent.Route,
   {
     path: 'coworking',
     title: 'Cowork in the XL',

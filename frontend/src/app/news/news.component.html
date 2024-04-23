@@ -1,3 +1,11 @@
 <div class="timerbutton">
+  <!-- need to add *ngIf= for authorization probably-->
   <a mat-raised-button routerLink="/newsform/edit/-1"> Create a new post </a>
+</div>
+
+<div>
+  <post-widget
+    [post]="post"
+    *ngFor="let post of (newsService.newsPosts$ | async)!">
+  </post-widget>
 </div>

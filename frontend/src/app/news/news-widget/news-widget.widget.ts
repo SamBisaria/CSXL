@@ -11,6 +11,7 @@ export class NewsWidgetComponent {
   @Input() post!: Post;
   constructor(public newsService: NewsService) {}
   deletePost(id: number) {
-    this.newsService.deletePost(id);
+    this.newsService.deletePost(id).subscribe(() => {});
+    this.newsService.getAllPosts();
   }
 }

@@ -44,6 +44,8 @@ import { NewsComponent } from './news/news.component';
 import { NewsFormComponent } from './news-form/news-form.component';
 import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
 import { NewsWidgetComponent } from './news/news-widget/news-widget.widget';
+import { NewsPageComponent } from './news-page/news-page.component';
+import { PostWidget } from './news/post-widget/post-widget.widget';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { NewsWidgetComponent } from './news/news-widget/news-widget.widget';
     NewsComponent,
     NewsFormComponent,
     NewsDraftsComponent,
-    NewsWidgetComponent
+    NewsWidgetComponent,
+    NewsPageComponent,
+    PostWidget
   ],
   imports: [
     /* Angular */
