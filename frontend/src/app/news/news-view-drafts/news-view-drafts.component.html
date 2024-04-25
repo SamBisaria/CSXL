@@ -1,0 +1,9 @@
+<div class="createbutton">
+  <a mat-raised-button routerLink="/newsform/edit/-1"> Create a new post </a>
+</div>
+<!--Remove Array.from() when this is fixed: https://github.com/angular/angular/issues/17725-->
+<div class="news-drafts">
+  <app-view-post
+    *ngFor="let draft of Array.from(newsService.drafts.values())"
+    [post]="draft" />
+</div>

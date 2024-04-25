@@ -1,32 +1,32 @@
-export interface Post {
-  id: number | null;
+export interface ClientPostContent {
+  // id: number | null; // ID should again be decided on server side
   headline: string;
   synopsis?: string; // Optional
   main_story: string;
-  author: number; // Change type to user
-  slug: string;
+  // author: number; // Change type to user - Client should not be able to spoof this values
+  // slug: string; // No custom slug creation/spoofing
   state: String; // Boolean type thing? Draft, Published.
   image_url?: string;
-  publish_date: String;
-  mod_date: String;
+  // published_timestamp: number; // Client should not be able to spoof this values
+  // last_modified_timestamp: number; // Client should not be able to spoof this values
   announcement: boolean; // Yes/No
   category?: string; // Boolean type thing as well?
-  upvotes: number; //There should be an upvote object
-  downvotes: number;
+  // upvotes: number; // There should be an upvote object - Clients should not be able to control these
+  // downvotes: number; // Clients should not be able to control these
   organization_id?: number; // Change type to organization?
 }
 
-export interface BackPost {
-  id: number | null;
+export interface ServerResponsePost {
+  id: number;
   headline: string;
-  synopsis?: string; // Optional
+  synopsis: string; // Optional
   main_story: string;
   author: number; // Change type to user
   slug: string;
   state: String; // Boolean type thing? Draft, Published.
-  image_url?: string;
-  publish_date: String;
-  mod_date: String;
+  image_url: string;
+  publish_timestamp: number;
+  modified_timestamp: number;
   announcement: boolean; // Yes/No
   category?: string; // Boolean type thing as well?
   upvotes: number; //There should be an upvote object

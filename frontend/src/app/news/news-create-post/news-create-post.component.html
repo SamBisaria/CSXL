@@ -1,0 +1,145 @@
+<a mat-icon-button routerLink="/newsform" class="back-button">
+  <mat-icon>arrow_back</mat-icon>
+</a>
+
+<div class="container">
+  <div class="row">
+    <hr />
+
+    <div class="create-post-container col-md-9">
+      <form class="post-form" [formGroup]="postForm">
+        <div class="form-group">
+          <div class="create-post-heading">Create Post</div>
+
+          <hr />
+          <mat-form-field>
+            <!--            <mat-label>Title</mat-label>-->
+            <input
+              type="text"
+              matInput
+              [formControl]="postForm.controls.headline"
+              class="form-control"
+              style="margin-top: 5px"
+              placeholder="Title" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <!--            <mat-label>Title</mat-label>-->
+            <input
+              type="text"
+              matInput
+              [formControl]="postForm.controls.synopsis"
+              class="form-control"
+              style="margin-top: 5px"
+              placeholder="Synopsis" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <!--            <mat-label>Title</mat-label>-->
+            <input
+              type="text"
+              matInput
+              [formControl]="postForm.controls.imageURL"
+              class="form-control"
+              style="margin-top: 5px"
+              placeholder="Image URL" />
+          </mat-form-field>
+
+          <!--TODO CSXL is licensed under MIT. Either change license to GPL or use older version that supports MIT-->
+          <editor
+            [init]="{
+              base_url: '/tinymce',
+              suffix: '.min',
+              height: 500,
+              plugins: 'lists link image table code help wordcount',
+              menubar: false,
+              selector: '#tinymce',
+              branding: false,
+              license_key: 'gpl'
+            }"
+            [formControl]="postForm.controls.mainStory">
+          </editor>
+
+          <span>
+            <div style="margin-top: 5px" class="float-right">
+              <mat-checkbox [formControl]="postForm.controls.announcement"
+                >Announcement?</mat-checkbox
+              >
+              <button (click)="discardPost()" class="btnDiscard">
+                Discard
+              </button>
+              <button (click)="previewPost()" class="btnPreview">
+                Preview
+              </button>
+              <button (click)="savePost()" class="btnSaveDraft">
+                Save Draft
+              </button>
+              <button (click)="submitPost()" class="btnCreatePost">Post</button>
+            </div>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--<form [formGroup]="postForm" (ngSubmit)="submitPost()" *ngIf="postForm">-->
+<!--  <h2>News Draft Editor</h2>-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Headline</mat-label>-->
+<!--    <input-->
+<!--      matInput-->
+<!--      type="text"-->
+<!--      placeholder="Headline"-->
+<!--      formControlName="headline"-->
+<!--      required />-->
+<!--  </mat-form-field>-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Synopsis (Optional)</mat-label>-->
+<!--    <textarea-->
+<!--      matInput-->
+<!--      placeholder="Synopsis"-->
+<!--      formControlName="synopsis"></textarea>-->
+<!--  </mat-form-field>-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Main Story</mat-label>-->
+<!--    <textarea-->
+<!--      matInput-->
+<!--      placeholder="Main Story"-->
+<!--      formControlName="mainStory"-->
+<!--      required></textarea>-->
+<!--  </mat-form-field>-->
+
+<!--  &lt;!&ndash; <div class="file-upload">-->
+<!--    <label for="imageUpload">Add Image (Optional)</label>-->
+<!--    <input type="file" id="imageUpload" (change)="handleFileInput($event)">-->
+<!--    <span id="file-name"></span> -->
+<!--  </div> &ndash;&gt;-->
+
+<!--  <div class="timestamp">-->
+<!--    Last Saved at-->
+<!--    <time> {{ currentTime }}</time>-->
+<!--  </div>-->
+<!--  <mat-checkbox color="accent" matinput formControlName="announcement">-->
+<!--    Announcement-->
+<!--  </mat-checkbox>-->
+<!--  <div class="actions">-->
+<!--    <button mat-raised-button type="button" (click)="previewPost()">-->
+<!--      Preview-->
+<!--    </button>-->
+<!--    <button mat-raised-button type="button" (click)="savePost()">Save</button>-->
+<!--    <button-->
+<!--      mat-raised-button-->
+<!--      color="primary"-->
+<!--      type="submit"-->
+<!--      (click)="(submitPost)">-->
+<!--      Post-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</form>-->
+<!-- <ng-template #unauthenticated>
+  You do not have permission to view this page
+</ng-template> -->

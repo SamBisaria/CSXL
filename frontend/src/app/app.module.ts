@@ -41,11 +41,12 @@ import { AboutComponent } from './about/about.component';
 import { GateComponent } from './gate/gate.component';
 import { SharedModule } from './shared/shared.module';
 import { NewsComponent } from './news/news.component';
-import { NewsFormComponent } from './news-form/news-form.component';
-import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
-import { NewsWidgetComponent } from './news/news-widget/news-widget.widget';
-import { NewsPageComponent } from './news-page/news-page.component';
-import { PostWidget } from './news/post-widget/post-widget.widget';
+import { NewsCreatePostComponent } from './news/news-create-post/news-create-post.component';
+import { NewsViewDraftsComponent } from './news/news-view-drafts/news-view-drafts.component';
+import { NewsWidgetComponent } from './news/widgets/view-post/view-post.widget';
+import { NewsFrontPageComponent } from './news/news-front-page/news-front-page.component';
+import { PostWidget } from './news/widgets/post-widget/post-widget.widget';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -57,10 +58,10 @@ import { PostWidget } from './news/post-widget/post-widget.widget';
     AboutComponent,
     GateComponent,
     NewsComponent,
-    NewsFormComponent,
-    NewsDraftsComponent,
+    NewsCreatePostComponent,
+    NewsViewDraftsComponent,
     NewsWidgetComponent,
-    NewsPageComponent,
+    NewsFrontPageComponent,
     PostWidget
   ],
   imports: [
@@ -98,7 +99,8 @@ import { PostWidget } from './news/post-widget/post-widget.widget';
           return localStorage.getItem('bearerToken');
         }
       }
-    })
+    }),
+    EditorModule
   ],
   providers: [
     {
@@ -106,7 +108,8 @@ import { PostWidget } from './news/post-widget/post-widget.widget';
       useClass: HttpRequestInterceptor,
       multi: true
     },
-    DatePipe
+    DatePipe,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
   bootstrap: [AppComponent]
 })

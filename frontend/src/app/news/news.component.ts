@@ -19,6 +19,6 @@ export class NewsComponent {
     private router: Router,
     public newsService: NewsService
   ) {
-    this.newsService.getAllPosts();
+    this.newsService.refreshPosts();
   }
 }

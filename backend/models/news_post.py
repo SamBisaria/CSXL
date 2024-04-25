@@ -5,25 +5,25 @@ __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
 
-class NewsPost(BaseModel):
+class PostModel(BaseModel):
     """
-    Pydantic model to represent an `News Posts`.
+    Pydantic model to represent an `Post`.
 
     This model is based on the `PostEntity` model, which defines the shape
     of the `NewsPost` database in the PostgreSQL database.
     """
 
-    id: int | None = None
-    headline: str = ""
+    id: int = None
+    headline: str = None
     synopsis: str = ""
-    main_story: str = ""
-    author: int = 0
-    slug: str = ""
-    state: str = ""
+    main_story: str = None
+    author: int = None
+    slug: str = None
+    state: str = None
     image_url: str = ""
-    publish_date: str = ""
-    mod_date: str = ""
-    announcement: bool = True
+    published_timestamp: int = None
+    modified_timestamp: int = None
+    announcement: bool = None
     category: str = ""
     upvote: int = 0
     downvote: int = 0

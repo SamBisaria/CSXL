@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from .entity_base import EntityBase
 from typing import Self
-from ..models.news_post import NewsPost
+from ..models.news_post import PostModel
 
 
 class NewsPostEntity(EntityBase):
@@ -43,7 +43,7 @@ class NewsPostEntity(EntityBase):
     organization_id: Mapped[str] = mapped_column(String, nullable=False)
 
     @classmethod
-    def from_model(cls, model: NewsPost) -> Self:
+    def from_model(cls, model: PostModel) -> Self:
         """
         Class method that converts a `NewsPost` model into a `NewsPostEntity`
 
@@ -61,7 +61,7 @@ class NewsPostEntity(EntityBase):
             slug=model.slug,
             state=model.state,
             image_url=model.image_url,
-            publish_date=model.publish_date,
+            publish_date=model.published_timestamp,
             mod_date=model.mod_date,
             announcement=model.announcement,
             upvote=model.upvote,
@@ -69,14 +69,14 @@ class NewsPostEntity(EntityBase):
             organization_id=model.organization_id,
         )
 
-    def to_model(self) -> NewsPost:
+    def to_model(self) -> PostModel:
         """
         Converts a `NewsPostEntity` object into a `NewsPost` model object
 
         Returns:
-            NewsPost: `NewsPost` object from the entity
+            PostModel: `NewsPost` object from the entity
         """
-        return NewsPost(
+        return PostModel(
             id=self.id,
             headline=self.headline,
             synopsis=self.synopsis,

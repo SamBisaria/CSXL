@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { Post } from '../news.model';
-import { NewsService } from '../news.service';
+import {ClientPostContent, ServerResponsePost} from '../../news.model';
+import { NewsService } from '../../news.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PostWidget {
   /** Inputs and outputs go here */
-  @Input() post!: Post;
+  @Input() post!: ServerResponsePost;
   /** Constructor */
   constructor(
     public newsService: NewsService,

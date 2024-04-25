@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from ....models.user import User
 from ...services import reset_table_id_seq
-from ....models.news_post import NewsPost
+from ....models.news_post import PostModel
 from ....entities.user_entity import UserEntity
 from ....entities.post_entity import PostEntity
 from ....entities.user_role_table import user_role_table
@@ -13,7 +13,7 @@ __authors__ = ["Kris Jordan"]
 __copyright__ = "Copyright 2023"
 __license__ = "MIT"
 
-post1 = NewsPost(
+post1 = PostModel(
     id=1,
     headline="head",
     synopsis="synopsi",
@@ -22,14 +22,14 @@ post1 = NewsPost(
     slug="sl",
     state="edit",
     image_url="",
-    publish_date="10/10/10",
-    mod_date="",
+    published_timestamp=1712184104,
+    modified_timestamp=1713912104,
     announcement=True,
     category="cat",
     organization_id=3,
 )
 
-post2 = NewsPost(
+post2 = PostModel(
     id=2,
     headline="head1",
     synopsis="synopsi1",
@@ -38,8 +38,8 @@ post2 = NewsPost(
     slug="sl",
     state="edit1",
     image_url="",
-    publish_date="10/10/10",
-    mod_date="",
+    published_timestamp=1712184104,
+    modified_timestamp=1713912104,
     announcement=True,
     category="cat",
     organization_id=3,

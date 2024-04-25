@@ -8,7 +8,7 @@ from backend.models.news_comments_no_user import NewsComments
 from backend.models.user import User
 from .entity_base import EntityBase
 from typing import Self
-from ..models.news_post import NewsPost
+from ..models.news_post import PostModel
 
 __authors__ = ["Ajay Gandecha", "Jade Keegan", "Brianna Ta", "Audrey Toney"]
 __copyright__ = "Copyright 2023"
@@ -49,7 +49,7 @@ class CommentEntity(EntityBase):
     users: Mapped[list["UserCommentAssociation"]] = relationship(backref="comments")
 
     @classmethod
-    def from_model(cls, model: NewsPost) -> Self:
+    def from_model(cls, model: PostModel) -> Self:
         """
         Class method that converts an `Organization` model into a `OrganizationEntity`
 
@@ -63,7 +63,7 @@ class CommentEntity(EntityBase):
             content=model.content,
             upvote=model.upvote,
             downvote=model.downvote,
-            publish_date=model.publish_date,
+            publish_date=model.published_timestamp,
             mod_date=model.mod_date,
             parent_comment=model.parent_comment,
             parent_post=model.parent_post,
@@ -71,7 +71,7 @@ class CommentEntity(EntityBase):
             upvote_users=model.upvote_users,
         )
 
-    def from_model_user(cls, model: NewsPost) -> Self:
+    def from_model_user(cls, model: PostModel) -> Self:
         """
         Class method that converts an `Organization` model into a `OrganizationEntity`
 
@@ -85,7 +85,7 @@ class CommentEntity(EntityBase):
             content=model.content,
             upvote=model.upvote,
             downvote=model.downvote,
-            publish_date=model.publish_date,
+            publish_date=model.published_timestamp,
             mod_date=model.mod_date,
             parent_comment=model.parent_comment,
             parent_post=model.parent_post,

@@ -1,7 +1,7 @@
 import pytest
 import sys
 
-from backend.models.news_post import NewsPost
+from backend.models.news_post import PostModel
 from ....services import NewsService
 from ..fixtures import news_svc_integration
 from ..core_data import setup_insert_data_fixture
@@ -57,7 +57,7 @@ def test_update_post_not_exists(news_svc_integration: NewsService):
     with pytest.raises(ResourceNotFoundException):
         news_svc_integration.update_post(
             user,
-            NewsPost(
+            PostModel(
                 id=1000,
                 headline="Fake Post",
                 synopsis="Fake Synopsis",

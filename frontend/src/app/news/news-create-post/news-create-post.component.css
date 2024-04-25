@@ -1,0 +1,172 @@
+.btnCreatePost,
+
+.post-form {
+  margin: 2px;
+}
+
+.comment-notification {
+  margin-top: 5px;
+}
+
+.create-post-container {
+  margin-top: 10px;
+  --post-line-color: #ccc;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #878A8C;
+  position: relative;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.btnDiscard {
+    background-color: #ea0a0a;
+    border-color: #ea0a0a;
+    color: aliceblue;
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 24px;
+    text-transform: uppercase;
+    padding: 3px 16px;
+    opacity: 1;
+    width: 288px;
+    height: 34px;
+  }
+
+.btnPreview {
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 24px;
+    text-transform: uppercase;
+    padding: 3px 16px;
+    opacity: 1;
+    width: 288px;
+    height: 34px;
+    margin-top: 5px;
+    color: #0079D3;
+    background-color: transparent;
+  }
+
+.btnSaveDraft {
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 24px;
+    text-transform: uppercase;
+    padding: 3px 16px;
+    opacity: 1;
+    width: 288px;
+    height: 34px;
+    margin-top: 5px;
+    color: #0079D3;
+    background-color: transparent;
+  }
+
+.create-post-heading {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #1c1c1c;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.btnCreatePost {
+    background-color: #0079D3;
+    border-color: #0079D3;
+    color: aliceblue;
+    fill: #0079D3;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    line-height: 24px;
+    text-transform: uppercase;
+    padding: 3px 16px;
+    opacity: 1;
+    width: 288px;
+    height: 34px;
+  }
+
+/*!* General Styling *!*/
+/*body {*/
+/*    font-family: sans-serif; */
+/*  }*/
+
+/*  form {*/
+/*    background-color: #303030; !* Dark background *!*/
+/*    color: white;            !* White text *!*/
+/*    padding: 20px;*/
+/*  }*/
+/*  */
+/*  h2 {*/
+/*    text-align: center;*/
+/*    margin-bottom: 20px;*/
+/*    margin-top: 0px;*/
+/*  }*/
+/*  */
+/*  mat-form-field {*/
+/*    width: 100%;*/
+/*    margin-bottom: 15px;*/
+/*  }*/
+/*  */
+/*  .file-upload {*/
+/*    margin-bottom: 15px;*/
+/*  }*/
+/*  */
+/*  .file-upload input[type="file"] {*/
+/*    display: none; */
+/*  }*/
+/*  */
+/*  .file-upload label {*/
+/*    background-color: #4CAF50; */
+/*    color: white;*/
+/*    padding: 10px;*/
+/*    cursor: pointer;*/
+/*    border-radius: 5px;*/
+/*  }*/
+/*  */
+/*  #file-name {*/
+/*    margin-left: 10px;*/
+/*  }*/
+/*  */
+/*  .timestamp {*/
+/*    text-align: center;*/
+/*    font-size: 14px;*/
+/*    margin-bottom: 15px;*/
+/*  }*/
+/*  */
+/*  .actions {*/
+/*    text-align: center;*/
+/*  }*/
+/*  */
+/*  .actions button {*/
+/*    margin: 0 10px;*/
+/*  }*/

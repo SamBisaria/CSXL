@@ -5,18 +5,18 @@ import { GateComponent } from './gate/gate.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
-import { NewsFormComponent } from './news-form/news-form.component';
-import { NewsDraftsComponent } from './news-drafts/news-drafts.component';
-import { NewsPageComponent } from './news-page/news-page.component';
+import { NewsCreatePostComponent } from './news/news-create-post/news-create-post.component';
+import { NewsViewDraftsComponent } from './news/news-view-drafts/news-view-drafts.component';
+import { NewsFrontPageComponent } from './news/news-front-page/news-front-page.component';
 
 const routes: Routes = [
   HomeComponent.Route,
   AboutComponent.Route,
   GateComponent.Route,
   NewsComponent.Route,
-  NewsFormComponent.Route,
-  NewsDraftsComponent.Route,
-  NewsPageComponent.Route,
+  NewsCreatePostComponent.Route,
+  NewsViewDraftsComponent.Route,
+  NewsFrontPageComponent.Route,
   {
     path: 'coworking',
     title: 'Cowork in the XL',

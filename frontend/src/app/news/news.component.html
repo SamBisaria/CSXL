@@ -4,8 +4,6 @@
 </div>
 
 <div>
-  <post-widget
-    [post]="post"
-    *ngFor="let post of (newsService.newsPosts$ | async)!">
+  <post-widget [post]="post" *ngFor="let post of newsService.posts.values()!">
   </post-widget>
 </div>
