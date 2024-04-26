@@ -17,7 +17,8 @@ class PostModel(BaseModel):
     headline: str = None
     synopsis: str = ""
     main_story: str = None
-    author: int = None
+    author_id: int = None
+    author_name: str = ""
     slug: str = None
     state: str = None
     image_url: str = ""

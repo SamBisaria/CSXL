@@ -21,4 +21,6 @@ export class NewsComponent {
   ) {
     this.newsService.refreshPosts();
   }
+
+    protected readonly Array = Array;
 }

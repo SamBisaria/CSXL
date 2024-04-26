@@ -14,6 +14,7 @@ import { NewsService } from '../news.service';
 import { NonNullAssert } from '@angular/compiler';
 import { D } from '@angular/cdk/keycodes';
 import { HttpResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-news-create-post',
@@ -45,7 +46,8 @@ export class NewsCreatePostComponent {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    public newsService: NewsService
+    public newsService: NewsService,
+    private toastr: ToastrService
   ) {
     // this.enabled$ = this.permission
     //   .check(
@@ -54,9 +56,7 @@ export class NewsCreatePostComponent {
     //   )
     //   .pipe(map((permission) => permission || this.profile?.role === 'admin'));
     this.isNew = this.route.snapshot.paramMap.get('id') === '-1';
-    this.draftID = parseInt(
-        <string>this.route.snapshot.paramMap.get('id')
-      );
+    this.draftID = parseInt(<string>this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
@@ -82,13 +82,13 @@ export class NewsCreatePostComponent {
   }
 
   previewPost() {}
-  savePost() {
+  savePost(state: string) {
     this.lastSavedTime = new Date().toLocaleTimeString();
     let clientPostContent: ClientPostContent = {
       headline: <string>this.postForm.controls['headline'].value,
       synopsis: <string>this.postForm.controls['synopsis'].value,
       main_story: <string>this.postForm.controls['mainStory'].value,
-      state: 'draft',
+      state: state,
       image_url: <string>this.postForm.controls['imageURL'].value,
       announcement: Boolean(this.postForm.controls['announcement'].value),
       category: '',
@@ -103,37 +103,55 @@ export class NewsCreatePostComponent {
         clientPostContent
       );
     }
-    let x;
+
     // Shows success notification and then navigates away on success, otherwise shows error notification
     httpResponseObservable.subscribe((data) => {
-      x = data;
       if (data.body == null) {
-        // Request or Malformed Data error
+        this.toastr.error('Malformed Request or Data', 'Error', {
+          closeButton: true
+        });
       }
       if (data.ok) {
-        console.log(200);
+        this.toastr.success(
+          state === 'published' ? 'Published Post' : 'Saved Draft',
+          'Success',
+          {
+            closeButton: true
+          }
+        );
         this.router.navigate(['/newsform']);
       } else {
-        // An error occured
+        this.toastr.error('An Error Occured', 'Error', {
+          closeButton: true
+        });
       }
     });
-    console.log(x);
   }
   submitPost(): void {
-    this.savePost();
+    this.savePost('published');
   }
 
   discardPost() {
     if (!this.isNew) {
-      let httpResponseObservable: Observable<HttpResponse<ServerResponsePost>> = this.newsService.deleteDrafts(this.draftID);
+      let httpResponseObservable: Observable<HttpResponse<ServerResponsePost>> =
+        this.newsService.deleteDrafts(this.draftID);
       httpResponseObservable.subscribe((response) => {
         if (response.ok) {
-          // TODO show successfully discarded popup menu
+          this.toastr.success('Draft Discarded', 'Success', {
+            closeButton: true
+          });
           this.router.navigate(['/newsform']);
         } else {
-          // TODO show discard error
+          this.toastr.error('Failed to Discard Draft', 'Error', {
+            closeButton: true
+          });
         }
       });
+    } else {
+      this.toastr.success('Draft Discarded', 'Success', {
+        closeButton: true
+      });
+      this.router.navigate(['/newsform']);
     }
   }
 }

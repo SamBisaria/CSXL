@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ServerResponsePost } from '../../news.model';
 import { NewsService } from '../../news.service';
-import {HttpResponse} from "@angular/common/http";
+import { HttpResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-post',
@@ -10,14 +11,19 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class NewsWidgetComponent {
   @Input() post!: ServerResponsePost;
-  constructor(private newsService: NewsService) {}
+  constructor(
+    private newsService: NewsService,
+    private toastr: ToastrService
+  ) {}
   deletePost(id: number) {
     let x: HttpResponse<any>;
     this.newsService.deleteDrafts(id).subscribe((response) => {
       if (response.ok) {
-        console.log("yay") // SHow successuflly deleted banner
+        this.toastr.success('Draft Deleted', 'Success', { closeButton: true });
       } else {
-        console.log('boooo'); // Show deletion error
+        this.toastr.error('Failed to Delete Draft', 'Error', {
+          closeButton: true
+        });
       }
     });
     // this.newsService.refreshPosts();
@@ -27,17 +33,37 @@ export class NewsWidgetComponent {
     let currentTimeStamp = (Date.now() / 1000) | 0;
     let secondsSincePost = currentTimeStamp - this.post.modified_timestamp;
     if (secondsSincePost < 60) {
-      return (secondsSincePost | 0) + ' seconds ago';
+      return (
+        (secondsSincePost | 0) +
+        (secondsSincePost > 0 && secondsSincePost < 2
+          ? ' second ago'
+          : ' seconds ago')
+      );
     } else if (secondsSincePost < 3600) {
-      return ((secondsSincePost / 60) | 0) + ' minutes ago';
+      return (
+        ((secondsSincePost / 60) | 0) +
+        (secondsSincePost < 120 ? ' minute ago' : ' minutes ago')
+      );
     } else if (secondsSincePost < 86400) {
-      return ((secondsSincePost / 3600) | 0) + (secondsSincePost < 7200 ? ' hour ago' : ' hours ago');
+      return (
+        ((secondsSincePost / 3600) | 0) +
+        (secondsSincePost < 7200 ? ' hour ago' : ' hours ago')
+      );
     } else if (secondsSincePost < 2592000) {
-      return ((secondsSincePost / 86400) | 0) + (secondsSincePost < 86400 * 2 ? ' day ago': ' days ago');
-    } else if ((secondsSincePost < 31557600)) {
-      return ((secondsSincePost / 2592000) | 0) + (secondsSincePost < 2592000 * 2 ? ' month ago' : ' months ago');
+      return (
+        ((secondsSincePost / 86400) | 0) +
+        (secondsSincePost < 172800 ? ' day ago' : ' days ago')
+      );
+    } else if (secondsSincePost < 31557600) {
+      return (
+        ((secondsSincePost / 2592000) | 0) +
+        (secondsSincePost < 5184000 ? ' month ago' : ' months ago')
+      );
     } else {
-      return ((secondsSincePost / 315576000) | 0) + ' years ago';
+      return (
+        ((secondsSincePost / 315576000) | 0) +
+        (secondsSincePost < 631152000 ? ' year ago' : ' years ago')
+      );
     }
   }
 }

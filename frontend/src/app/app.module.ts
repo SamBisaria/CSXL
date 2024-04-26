@@ -47,6 +47,7 @@ import { NewsWidgetComponent } from './news/widgets/view-post/view-post.widget';
 import { NewsFrontPageComponent } from './news/news-front-page/news-front-page.component';
 import { PostWidget } from './news/widgets/post-widget/post-widget.widget';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -100,7 +101,9 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
         }
       }
     }),
-    EditorModule
+    EditorModule, // Fancy Markdown Editing
+    BrowserAnimationsModule, // Notifications
+    ToastrModule.forRoot()
   ],
   providers: [
     {

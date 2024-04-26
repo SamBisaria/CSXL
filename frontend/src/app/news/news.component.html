@@ -4,6 +4,7 @@
 </div>
 
 <div>
-  <post-widget [post]="post" *ngFor="let post of newsService.posts.values()!">
-  </post-widget>
+  <app-view-post
+    *ngFor="let post of Array.from(newsService.posts.values())"
+    [post]="post" />
 </div>

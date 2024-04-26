@@ -1,4 +1,45 @@
-.btnCreatePost,
+/*.action-buttons {*/
+/*    margin-top: 5px;*/
+/*}*/
+
+
+/*@media only screen and (max-device-width: 750px) {*/
+/*  .action-buttons {*/
+/*    !*display: flex;*!*/
+/*    !*justify-content: center;*!*/
+/*  }*/
+/*}*/
+
+/*@media only screen and (max-device-width: 450px) {*/
+/*  .action-buttons {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*  }*/
+/*}*/
+.action-buttons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5px;
+}
+
+@media screen and  (min-width: 451px) and (max-width: 768px) {
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    justify-items: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
 .post-form {
   margin: 2px;
@@ -59,7 +100,6 @@
     opacity: 1;
     width: 288px;
     height: 34px;
-    margin-top: 5px;
     color: #0079D3;
     background-color: transparent;
   }
@@ -80,7 +120,6 @@
     opacity: 1;
     width: 288px;
     height: 34px;
-    margin-top: 5px;
     color: #0079D3;
     background-color: transparent;
   }

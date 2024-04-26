@@ -21,7 +21,8 @@ export interface ServerResponsePost {
   headline: string;
   synopsis: string; // Optional
   main_story: string;
-  author: number; // Change type to user
+  author_id: number;
+  author_name: string; // Change type to user
   slug: string;
   state: String; // Boolean type thing? Draft, Published.
   image_url: string;

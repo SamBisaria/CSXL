@@ -47,7 +47,7 @@ class NewsService:
 
     def get_drafts(self, subject: User):
         query = select(PostEntity).where(
-            PostEntity.state == "draft", PostEntity.creation_author_id == subject.id
+            PostEntity.state == "draft", PostEntity.author_id == subject.id
         )
         entities = self._session.scalars(query).all()
         # TOdo return empty list instead of erroring when no drafts
@@ -60,21 +60,21 @@ class NewsService:
     def get_draft(self, subject: User, post_id: int):
         query = select(PostEntity).where(
             PostEntity.state == "draft",
-            PostEntity.creation_author_id == subject.id,
+            PostEntity.author_id == subject.id,
             PostEntity.id == post_id,
         )
         obj = self._session.scalar(query)
         # Ensure object exists
-        if obj is None or obj.creation_author_id != subject.id:
+        if obj is None or obj.author_id != subject.id:
             raise ResourceNotFoundException(
                 f"No News Post found with matching id: {post_id}"
             )
         return obj.to_model()
 
-    def add_post_draft(self, subject: User, news_post: PostModel):
-        news_post.author = subject.id
+    def add_post(self, subject: User, news_post: PostModel):
         # Slugs are generated as sqids from the last modified
-        news_post.state = "draft"
+        news_post.author_id = subject.id
+        # news_post.state = "draft"
         news_post.slug = ""  # Prevents null error on flush
         news_post.published_timestamp = int(datetime.now(tz=timezone.utc).timestamp())
         news_post.modified_timestamp = news_post.published_timestamp
@@ -98,7 +98,7 @@ class NewsService:
                 f"No organization found with matching ID: {post.id}"
             )
 
-        if subject.id == obj.creation_author_id:
+        if subject.id == obj.author_id:
             obj.headline = post.headline
             obj.synopsis = post.synopsis
             obj.main_story = post.main_story
@@ -119,7 +119,7 @@ class NewsService:
         obj = self._session.get(PostEntity, post_id)
 
         # Check if result is null
-        if obj is None or subject.id != obj.creation_author_id:
+        if obj is None or subject.id != obj.author_id:
             raise ResourceNotFoundException(
                 f"No organization found with matching ID: {post_id}"
             )
@@ -134,7 +134,7 @@ class NewsService:
         obj = (
             self._session.query(PostEntity)
             .filter(
-                PostEntity.id == post_id, PostEntity.creation_author_id == subject.id
+                PostEntity.id == post_id, PostEntity.author_id == subject.id
             )
             .one_or_none()
         )
@@ -227,7 +227,7 @@ class NewsService:
         return post.to_model()
 
     def get_posts(self):
-        query = select(PostEntity).where(PostEntity.state == "finished")
+        query = select(PostEntity).where(PostEntity.state == "published")
         entities = self._session.scalars(query).all()
         if entities is None:
             raise ResourceNotFoundException(
@@ -238,7 +238,7 @@ class NewsService:
     def get_posts_by_date(self):
         query = (
             select(PostEntity)
-            .where(PostEntity.state == "finished")
+            .where(PostEntity.state == "published")
             .order_by(PostEntity.published_timestamp.desc())
         )
         entities = self._session.scalars(query).all()
@@ -251,7 +251,7 @@ class NewsService:
     def get_popular_posts(self, subject: User, page_num: int):
         query = (
             select(PostEntity)
-            .where(state="finished", author=subject.id)
+            .where(state="published", author=subject.id)
             .order_by(PostEntity.upvote)
         )
         entities = self._session.scalars(query).all()
@@ -270,28 +270,28 @@ class NewsService:
 
         return obj.to_model()
 
-    def add_post(self, subject: User, newsPost: PostModel):
-
-        obj = (
-            self._session.query(PostEntity)
-            .filter(PostEntity.id == newsPost.id)
-            .one_or_none()
-        )
-        while obj is not None:
-            newsPost.id += 1
-            obj = (
-                self._session.query(PostEntity)
-                .filter(PostEntity.id == newsPost.id)
-                .one_or_none()
-            )
-        newsPost.author = subject.id
-        newsPost.state = "published"
-
-        postEntity = PostEntity.from_model(newsPost)
-        postEntity.users = []
-        self._session.add(postEntity)
-        self._session.commit()
-        return postEntity.to_model()
+    # def add_post(self, subject: User, newsPost: PostModel):
+    #
+    #     obj = (
+    #         self._session.query(PostEntity)
+    #         .filter(PostEntity.id == newsPost.id)
+    #         .one_or_none()
+    #     )
+    #     while obj is not None:
+    #         newsPost.id += 1
+    #         obj = (
+    #             self._session.query(PostEntity)
+    #             .filter(PostEntity.id == newsPost.id)
+    #             .one_or_none()
+    #         )
+    #     newsPost.author = subject.id
+    #     newsPost.state = "published"
+    #
+    #     postEntity = PostEntity.from_model(newsPost)
+    #     postEntity.users = []
+    #     self._session.add(postEntity)
+    #     self._session.commit()
+    #     return postEntity.to_model()
 
     def update_post(self, subject: User, newsPost: PostModel):
         obj = self._session.get(PostEntity, newsPost.id)
@@ -306,7 +306,7 @@ class NewsService:
         obj.headline = newsPost.headline
         obj.synopsis = newsPost.synopsis
         obj.main_story = newsPost.main_story
-        obj.creation_author_id = newsPost.author
+        obj.author_id = newsPost.author
         obj.slug = newsPost.slug
         obj.state = newsPost.state
         obj.image_url = newsPost.image_url
@@ -328,13 +328,13 @@ class NewsService:
         obj = self._session.query(PostEntity).filter(PostEntity.id == id).one_or_none()
 
         # Ensure object exists
-        if obj is None or subject.id != obj.creation_author_id:
+        if obj is None or subject.id != obj.author_id:
             raise ResourceNotFoundException(
                 f"No News Post found with matching id: {id}"
             )
 
         # Delete object and commit
         self._session.delete(obj)
-        # Save changes
+        model = obj.to_model()
         self._session.commit()
-        return obj.to_model()
+        return model

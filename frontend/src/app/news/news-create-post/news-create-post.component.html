@@ -61,17 +61,18 @@
           </editor>
 
           <span>
-            <div style="margin-top: 5px" class="float-right">
-              <mat-checkbox [formControl]="postForm.controls.announcement"
-                >Announcement?</mat-checkbox
-              >
+            <mat-checkbox [formControl]="postForm.controls.announcement"
+              >Announcement?</mat-checkbox
+            >
+
+            <div class="action-buttons">
               <button (click)="discardPost()" class="btnDiscard">
                 Discard
               </button>
               <button (click)="previewPost()" class="btnPreview">
                 Preview
               </button>
-              <button (click)="savePost()" class="btnSaveDraft">
+              <button (click)="savePost('draft')" class="btnSaveDraft">
                 Save Draft
               </button>
               <button (click)="submitPost()" class="btnCreatePost">Post</button>

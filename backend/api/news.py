@@ -139,15 +139,15 @@ def create_draft(
         PostModel: The `NewsPost` in the `PostEntity` table representing the draft which
         has just been created
     """
-    return news_service.add_post_draft(subject, post)
+    return news_service.add_post(subject, post)
 
 
-@api.post("/publish/post", response_model=PostModel, tags=["News"])
-def create_draft(
-    post: PostModel,
-    subject: User = Depends(registered_user),
-    news_service: NewsService = Depends(),
-) -> PostModel:
+# @api.post("/publish/post", response_model=PostModel, tags=["News"])
+# def create_post(
+#     post: PostModel,
+#     subject: User = Depends(registered_user),
+#     news_service: NewsService = Depends(),
+# ) -> PostModel:
     """
     Creates a new draft
 
@@ -160,8 +160,8 @@ def create_draft(
         PostModel: The `NewsPost` in the `PostEntity` table representing the draft which
         has just been created
     """
-    post.author = subject.id
-    return news_service.add_post(subject, post)
+    # post.author = subject.id
+    # return news_service.add_post(subject, post)
 
 
 @api.put("/draft/edit/{post_id}", response_model=PostModel, tags=["News"])
@@ -187,17 +187,17 @@ def update_draft(
     return news_service.update_draft(subject, post, post_id)
 
 
-@api.put("/publish/{post_id}", response_model=PostModel, tags=["News"])
-def publish_news_post(
-    post_id: int,
-    subject: User = Depends(registered_user),
-    news_service: NewsService = Depends(),
-) -> PostModel:
+# @api.put("/publish/{post_id}", response_model=PostModel, tags=["News"])
+# def publish_news_post(
+#     post_id: int,
+#     subject: User = Depends(registered_user),
+#     news_service: NewsService = Depends(),
+# ) -> PostModel:
     """
     Publicizes an existing draft
 
     Parameters:
-        post_id (int): id of the draft beign updated
+        post_id (int): id of the draft being updated
         subject: a valid User model representing the currently logged-in User
         news_service: a valid NewsService
 
@@ -205,7 +205,7 @@ def publish_news_post(
         PostModel: The `NewsPost` in the `PostEntity` table representing the draft which
         has just been made public
     """
-    return news_service.publish_post(subject, post_id)
+    # return news_service.publish_post(subject, post_id)
 
 
 @api.delete("/delete/{post_id}", response_model=PostModel, tags=["News"])

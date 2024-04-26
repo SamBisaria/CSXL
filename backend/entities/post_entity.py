@@ -2,6 +2,7 @@
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from backend.entities import user_post_association
 from backend.entities.organization_entity import OrganizationEntity
@@ -35,7 +36,13 @@ class PostEntity(EntityBase):
     # Slug of the organization
     main_story: Mapped[str] = mapped_column(String, nullable=False, default="")
     # Logo of the organization
-    creation_author_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+    author_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
+
+    author: Mapped["UserEntity"] = relationship("UserEntity", foreign_keys=[author_id])
+
+    @hybrid_property
+    def author_name(self) -> str:
+        return f"{self.author.first_name} {self.author.last_name}"
 
     # Long description of the organization
     state: Mapped[str] = mapped_column(String)
@@ -82,7 +89,7 @@ class PostEntity(EntityBase):
             headline=model.headline,
             synopsis=model.synopsis,
             main_story=model.main_story,
-            creation_author_id=model.author,
+            author_id=model.author_id,
             slug=model.slug,
             state=model.state,
             image_url=model.image_url,
@@ -97,13 +104,12 @@ class PostEntity(EntityBase):
         )
 
     def from_model_users(cls, model: NewsPostUsers) -> Self:
-
         return cls(
             id=model.id,
             headline=model.headline,
             synopsis=model.synopsis,
             main_story=model.main_story,
-            creation_author_id=model.author,
+            author_id=model.author,
             slug=model.slug,
             state=model.state,
             image_url=model.image_url,
@@ -131,7 +137,7 @@ class PostEntity(EntityBase):
             headline=self.headline,
             synopsis=self.synopsis,
             main_story=self.main_story,
-            author=self.creation_author_id,
+            author=self.author_id,
             slug=self.slug,
             state=self.state,
             image_url=self.image_url,
@@ -156,7 +162,8 @@ class PostEntity(EntityBase):
             headline=self.headline,
             synopsis=self.synopsis,
             main_story=self.main_story,
-            author=self.creation_author_id,
+            author_id=self.author_id,
+            author_name=self.author_name,
             slug=self.slug,
             state=self.state,
             image_url=self.image_url,
