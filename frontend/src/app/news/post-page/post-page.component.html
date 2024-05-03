@@ -1,0 +1,15 @@
+<div *ngIf="post !== null" class="post-container">
+  <h1>{{ post.headline }}</h1>
+  <p class="author">By {{ post.author_name }}</p>
+  <p class="synopsis">
+    <strong>{{ post.synopsis }}</strong>
+  </p>
+  <div class="image-container" *ngIf="post.image_url !== ''">
+    <img [src]="post.image_url" alt="Post Image" />
+  </div>
+  <div class="main-story" [innerHTML]="post.main_story"></div>
+</div>
+
+<div *ngIf="post === null">
+  <p>Post not found</p>
+</div>

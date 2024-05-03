@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 
 /* HTTP and Auth */
 import { RouterModule } from '@angular/router';
@@ -47,7 +48,8 @@ import { NewsWidgetComponent } from './news/widgets/view-post/view-post.widget';
 import { NewsFrontPageComponent } from './news/news-front-page/news-front-page.component';
 import { PostWidget } from './news/widgets/post-widget/post-widget.widget';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
-import {ToastrModule} from "ngx-toastr";
+import { ToastrModule } from 'ngx-toastr';
+import { PostPageComponent } from './news/post-page/post-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import {ToastrModule} from "ngx-toastr";
     NewsViewDraftsComponent,
     NewsWidgetComponent,
     NewsFrontPageComponent,
-    PostWidget
+    PostWidget,
+    PostPageComponent
   ],
   imports: [
     /* Angular */
@@ -74,6 +77,7 @@ import {ToastrModule} from "ngx-toastr";
     AppRoutingModule,
     LayoutModule,
     ReactiveFormsModule,
+    CommonModule,
 
     /* Material UI */
     MatButtonModule,

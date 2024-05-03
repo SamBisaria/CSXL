@@ -1,0 +1,74 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #222; /* Blackish-gray background */
+    color: #ddd; /* White-ish gray text color */
+  }
+  
+  /* Post Container */
+  .post-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 20px;
+    background-color: transparent;
+    box-shadow: none;
+  }
+  
+  /* Post Headline */
+  h1 {
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #fff; /* White text color */
+    text-align: center;
+  }
+  
+  /* Author */
+  .author {
+    font-size: 24px;
+    font-style: italic;
+    margin-bottom: 20px;
+    color: #ccc; /* Light gray text color */
+    text-align: center;
+  }
+  
+  /* Synopsis */
+  .synopsis {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #ddd; /* White-ish gray text color */
+    text-align: center;
+  }
+  
+  /* Image Container */
+  .image-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Post Image */
+  .image-container img {
+    max-width: 100%;
+    border: 2px solid #666; /* Light gray border */
+  }
+  
+  /* Main Story */
+  .main-story {
+    line-height: 1.8;
+    text-align: justify;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #ddd; /* White-ish gray text color */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Post Not Found */
+  .post-not-found {
+    text-align: center;
+    font-size: 18px;
+    color: #ccc; /* Light gray text color */
+  }

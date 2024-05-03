@@ -1,7 +1,14 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar class="avatar"></div>
-    <mat-card-title>{{ post.headline }}</mat-card-title>
+    <mat-card-title
+      ><div *ngIf="post.state === 'published'; else basic">
+        <a [routerLink]="['/news', post.id]">{{ post.headline }}</a>
+      </div>
+      <ng-template #basic>
+        <mat-card-title>{{ post.headline }}</mat-card-title>
+      </ng-template></mat-card-title
+    >
     <mat-card-subtitle>
       Posted {{ timeSincePostUpdated() }} by {{ post.author_name }} from
       <a [routerLink]="['/organization', post.organization_id]"
@@ -20,10 +27,16 @@
     </div>
   </mat-card-header>
   <mat-card-content>
-    <div [innerHTML]="post.main_story"></div>
+    <div [innerHTML]="post.synopsis"></div>
+    <div *ngIf="post.image_url && isImageLoadable(post.image_url)">
+      <img [src]="post.image_url" />
+    </div>
+    <div
+      *ngIf="!(post.image_url && isImageLoadable(post.image_url))"
+      [innerHTML]="post.main_story"></div>
   </mat-card-content>
   <mat-card-actions class="mat-card-actions-bottom">
-    <div class="vote-div">
+    <div class="vote-div" *ngIf="post.state === 'published'">
       <button mat-button class="vote-button">
         <mat-icon>keyboard_arrow_up</mat-icon>
       </button>
@@ -31,15 +44,15 @@
       <button mat-button class="vote-button">
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
+      <button mat-button class="other-button">
+        <mat-icon>comment</mat-icon>
+        CO
+      </button>
+      <button mat-button class="other-button">
+        <mat-icon>share</mat-icon>
+        SH
+      </button>
     </div>
-    <button mat-button>
-      <mat-icon>comment</mat-icon>
-      CO
-    </button>
-    <button mat-button>
-      <mat-icon>share</mat-icon>
-      SH
-    </button>
   </mat-card-actions>
 </mat-card>
 

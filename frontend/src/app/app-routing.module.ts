@@ -7,7 +7,7 @@ import { AboutComponent } from './about/about.component';
 import { NewsComponent } from './news/news.component';
 import { NewsCreatePostComponent } from './news/news-create-post/news-create-post.component';
 import { NewsViewDraftsComponent } from './news/news-view-drafts/news-view-drafts.component';
-import { NewsFrontPageComponent } from './news/news-front-page/news-front-page.component';
+import { PostPageComponent } from './news/post-page/post-page.component';
 
 const routes: Routes = [
   HomeComponent.Route,
@@ -16,7 +16,7 @@ const routes: Routes = [
   NewsComponent.Route,
   NewsCreatePostComponent.Route,
   NewsViewDraftsComponent.Route,
-  NewsFrontPageComponent.Route,
+  PostPageComponent.Route,
   {
     path: 'coworking',
     title: 'Cowork in the XL',

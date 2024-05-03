@@ -119,7 +119,11 @@ export class NewsCreatePostComponent {
             closeButton: true
           }
         );
-        this.router.navigate(['/newsform']);
+        if (state === 'published') {
+          this.router.navigate(['/news']);
+        } else {
+          this.router.navigate(['/newsform']);
+        }
       } else {
         this.toastr.error('An Error Occured', 'Error', {
           closeButton: true

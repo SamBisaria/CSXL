@@ -13,6 +13,7 @@ from .public_user import PublicUser
 from .event_details import EventDetails
 from .room import Room
 from .room_details import RoomDetails
+from .news_post import PostModel
 from .event_registration import (
     EventRegistration,
     NewEventRegistration,

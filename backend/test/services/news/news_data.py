@@ -18,9 +18,9 @@ post1 = PostModel(
     headline="head",
     synopsis="synopsi",
     main_story="storyeee",
-    author=2,
+    author_id=2,
     slug="sl",
-    state="edit",
+    state="draft",
     image_url="",
     published_timestamp=1712184104,
     modified_timestamp=1713912104,
@@ -34,9 +34,24 @@ post2 = PostModel(
     headline="head1",
     synopsis="synopsi1",
     main_story="storyeee1",
-    author=1,
-    slug="sl",
-    state="edit1",
+    author_id=1,
+    slug="slii",
+    state="published",
+    image_url="",
+    published_timestamp=1712184104,
+    modified_timestamp=1713912104,
+    announcement=True,
+    category="cat",
+    organization_id=3,
+)
+post3 = PostModel(
+    id=3,
+    headline="newpost test",
+    synopsis="newpost test",
+    main_story="newpost test",
+    author_id=1,
+    slug="slii",
+    state="edit",
     image_url="",
     published_timestamp=1712184104,
     modified_timestamp=1713912104,
@@ -71,20 +86,20 @@ posts = [post1, post2]
 
 
 def insert_fake_data(session: Session):
-    global users
-    entities = []
-    for user in users:
+    # global users
+    # entities = []
+    """for user in users:
         entity = UserEntity.from_model(user)
         session.add(entity)
         entities.append(entity)
     reset_table_id_seq(session, UserEntity, UserEntity.id, len(users) + 1)
-    session.commit()  # Commit to ensure User IDs in database
+    session.commit()  # Commit to ensure User IDs in database"""
 
     # Associate Users with the Role(s) they are in
     for post in posts:
         ent = PostEntity.from_model(post)
         session.add(ent)
-        entities.append(ent)
+        # entities.append(ent)
     session.commit()
 
 

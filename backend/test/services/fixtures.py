@@ -12,6 +12,7 @@ from ...services import (
     OrganizationService,
     EventService,
     RoomService,
+    NewsService,
 )
 
 __authors__ = ["Kris Jordan", "Ajay Gandecha"]

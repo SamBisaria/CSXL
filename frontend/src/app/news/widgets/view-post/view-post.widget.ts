@@ -66,4 +66,11 @@ export class NewsWidgetComponent {
       );
     }
   }
+  isImageLoadable(url: string): boolean {
+    const img = new Image();
+    img.src = url;
+    img.onerror = () => false;
+    img.onload = () => true;
+    return img.complete;
+  }
 }

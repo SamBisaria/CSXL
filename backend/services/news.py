@@ -6,7 +6,7 @@ import time
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from sqids import Sqids;
+from sqids import Sqids
 from datetime import datetime, timezone
 
 from backend.entities.post_entity import PostEntity
@@ -30,14 +30,16 @@ __license__ = "MIT"
 class NewsService:
 
     def __init__(
-            self,
-            session: Session = Depends(db_session),
-            permission: PermissionService = Depends(),
+        self,
+        session: Session = Depends(db_session),
+        permission: PermissionService = Depends(),
     ):
         """Initializes the `NewsService` session, and `PermissionService`"""
         self._session = session
         self._permission = permission
-        self._sqids = Sqids(alphabet="BLzxKTuIslpgY5Xy0FSWa1VNtcvwMm4D8jk9hbAEfdJriZ273GQ6HqPoenCROU")
+        self._sqids = Sqids(
+            alphabet="BLzxKTuIslpgY5Xy0FSWa1VNtcvwMm4D8jk9hbAEfdJriZ273GQ6HqPoenCROU"
+        )
         self._random = random.Random()
 
     """
@@ -133,9 +135,7 @@ class NewsService:
     def delete_post(self, subject: User, post_id: int):
         obj = (
             self._session.query(PostEntity)
-            .filter(
-                PostEntity.id == post_id, PostEntity.author_id == subject.id
-            )
+            .filter(PostEntity.id == post_id, PostEntity.author_id == subject.id)
             .one_or_none()
         )
         # Ensure object exists
@@ -303,22 +303,22 @@ class NewsService:
             )
 
         # Update organization object
-        obj.headline = newsPost.headline
-        obj.synopsis = newsPost.synopsis
-        obj.main_story = newsPost.main_story
-        obj.author_id = newsPost.author
-        obj.slug = newsPost.slug
-        obj.state = newsPost.state
-        obj.image_url = newsPost.image_url
-        obj.published_timestamp = newsPost.published_timestamp
-        obj.modified_timestamp = newsPost.mod_date
-        obj.announcement = newsPost.announcement
-        obj.upvote = newsPost.upvote
-        obj.downvote = newsPost.downvote
-        obj.organization_id = newsPost.organization_id
+        if subject.id == obj.author_id:
 
-        # Save changes
-        self._session.commit()
+            obj.headline = newsPost.headline
+            obj.synopsis = newsPost.synopsis
+            obj.main_story = newsPost.main_story
+            obj.slug = newsPost.slug
+            obj.state = newsPost.state
+            obj.image_url = newsPost.image_url
+            obj.published_timestamp = newsPost.published_timestamp
+            obj.modified_timestamp = newsPost.modified_timestamp
+            obj.announcement = newsPost.announcement
+            obj.upvote = newsPost.upvote
+            obj.downvote = newsPost.downvote
+
+            # Save changes
+            self._session.commit()
 
         # Return updated object
         return obj.to_model()
