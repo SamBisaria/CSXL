@@ -8,6 +8,12 @@ We made a news page where students can view posts made by those given permission
 
 Can be run locally according to instructions in get_started.md
 
+### Roles:
+1. Sally Student is a typical student that is allowed to view posts, and is able to upvote and downvote posts. 
+2. Poster Perry can do everything that Sally Student can do, but they have the ability to make, edit, and delete their own drafts and posts. 
+3. Announcer Adam can do everything Poster Perry can do, but they also have access to make their posts announcements. 
+4. Ronda Root is the administrator of the website who can do everything Announcer Adam can do, but is able to edit and delete posts made by other users. 
+
 ### Viewing Posts and Drafts:
 The posts can be seen on the main news page on the csxl, the code for which is at csxl-final-team-c4/frontend/src/app/news/post-page while the "News Drafts" page contains only drafts made by the specific author, and the code for this is located at csxl-final-team-c4/frontend/src/app/news/news-view-drafts. Both of these rely on the widget app-view-post which is in news/widgets/view-post, which is given a post or draft as an input. Both of these work by getting the data from a map in the news/news.service.ts, the frontend service, which can either be the map containing drafts or posts. The service gets its info from the backend APIs, for viewing it is specifically the GET requests, and the API requests get or send info to the backend services. The APIs are at backend/api/news.py and the backend service is at backend/services/news.py. These mainly rely on PostModel at backend/models/news_post.py, and the entities PostEntity and UserEntity at backend/entities/post_entity.py and backend/entities/user_entity.py respectively. 
 
