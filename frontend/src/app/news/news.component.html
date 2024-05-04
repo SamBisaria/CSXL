@@ -1,10 +1,15 @@
-<div class="timerbutton">
-  <!-- need to add *ngIf= for authorization probably-->
-  <a mat-raised-button routerLink="/newsform/edit/-1"> Create a new post </a>
-</div>
-
 <div>
   <app-view-post
     *ngFor="let post of Array.from(newsService.posts.values())"
-    [post]="post" />
+    [post]="post"
+    [ngClass]="{ announcement: post.announcement }">
+  </app-view-post>
 </div>
+
+<!--<div>-->
+<!--  <app-view-post-->
+<!--    *ngFor="let post of sortedPosts"-->
+<!--    [post]="post"-->
+<!--    [ngClass]="{ announcement: post.isAnnouncement }">-->
+<!--  </app-view-post>-->
+<!--</div>-->

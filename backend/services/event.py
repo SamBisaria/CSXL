@@ -178,7 +178,7 @@ class EventService:
             EventDetails: a valid EventDetails model representing the new Event
         """
 
-        # Ensure that the user has appropriate permissions to create users
+        # Ensure that the user has a;lppropriate permissions to create users
         self._permission.enforce(
             subject,
             "organization.events.create",

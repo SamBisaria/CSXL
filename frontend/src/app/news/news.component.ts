@@ -13,6 +13,7 @@ export class NewsComponent {
     title: 'News',
     component: NewsComponent
   };
+  public sortedPosts: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -20,7 +21,24 @@ export class NewsComponent {
     public newsService: NewsService
   ) {
     this.newsService.refreshPosts();
+    this.sortPosts();
   }
 
-    protected readonly Array = Array;
+  protected readonly Array = Array;
+
+  private sortPosts(): void {
+    const posts = Array.from(this.newsService.posts.values());
+    this.sortedPosts = posts.sort((a, b) => {
+      if (a.announcement && !b.announcement) {
+        return -1;
+      } else if (!a.announcement && b.announcement) {
+        return 1;
+      } else {
+        return (
+          new Date(b.modified_timestamp).getTime() -
+          new Date(a.modified_timestamp).getTime()
+        );
+      }
+    });
+  }
 }

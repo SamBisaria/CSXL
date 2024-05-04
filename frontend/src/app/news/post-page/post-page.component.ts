@@ -30,4 +30,12 @@ export class PostPageComponent implements OnInit {
     const id = parseInt(this.route.snapshot.paramMap.get('id') || '', 10);
     this.post = this.newsService.getPostByID(id!);
   }
+
+  isImageLoadable(url: string): boolean {
+    const img = new Image();
+    img.src = url;
+    img.onerror = () => false;
+    img.onload = () => true;
+    return img.complete;
+  }
 }

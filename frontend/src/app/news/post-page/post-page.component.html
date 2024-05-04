@@ -4,7 +4,9 @@
   <p class="synopsis">
     <strong>{{ post.synopsis }}</strong>
   </p>
-  <div class="image-container" *ngIf="post.image_url !== ''">
+  <div
+    class="image-container"
+    *ngIf="post.image_url && isImageLoadable(post.image_url)">
     <img [src]="post.image_url" alt="Post Image" />
   </div>
   <div class="main-story" [innerHTML]="post.main_story"></div>

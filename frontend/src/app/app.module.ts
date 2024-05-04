@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 /* HTTP and Auth */
 import { RouterModule } from '@angular/router';
@@ -69,48 +69,49 @@ import { PostPageComponent } from './news/post-page/post-page.component';
     PostWidget,
     PostPageComponent
   ],
-  imports: [
-    /* Angular */
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    NgForOf,
-    AppRoutingModule,
-    LayoutModule,
-    ReactiveFormsModule,
-    CommonModule,
+    imports: [
+        /* Angular */
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        NgForOf,
+        AppRoutingModule,
+        LayoutModule,
+        ReactiveFormsModule,
+        CommonModule,
 
-    /* Material UI */
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatCheckboxModule,
-    FormsModule,
-    RouterModule,
-    SharedModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem('bearerToken');
-        }
-      }
-    }),
-    EditorModule, // Fancy Markdown Editing
-    BrowserAnimationsModule, // Notifications
-    ToastrModule.forRoot()
-  ],
+        /* Material UI */
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatSidenavModule,
+        MatSliderModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        MatCheckboxModule,
+        FormsModule,
+        RouterModule,
+        SharedModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => {
+                    return localStorage.getItem('bearerToken');
+                }
+            }
+        }),
+        EditorModule, // Fancy Markdown Editing
+        BrowserAnimationsModule, // Notifications
+        ToastrModule.forRoot(),
+        NgOptimizedImage
+    ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

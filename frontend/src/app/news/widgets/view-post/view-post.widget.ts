@@ -3,6 +3,7 @@ import { ServerResponsePost } from '../../news.model';
 import { NewsService } from '../../news.service';
 import { HttpResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import {state} from "@angular/animations";
 
 @Component({
   selector: 'app-view-post',
@@ -73,4 +74,6 @@ export class NewsWidgetComponent {
     img.onload = () => true;
     return img.complete;
   }
+
+  protected readonly state = state;
 }

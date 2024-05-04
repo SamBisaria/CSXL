@@ -51,11 +51,35 @@ user = User(
     accepted_community_agreement=True,
 )
 
-users = [root, ambassador, user]
+poster = User(
+    id=4,
+    pid=222222222,
+    onyen="xlstanperry",
+    email="xlstanperry@unc.edu",
+    first_name="Perry",
+    last_name="Poster",
+    pronouns="He / Him / His",
+    accepted_community_agreement=True,
+)
+
+announcer = User(
+    id=5,
+    pid=333333333,
+    onyen="xlstanannouncer",
+    email="xlstanannouncer@unc.edu",
+    first_name="Adam",
+    last_name="Announcer",
+    pronouns="He / Him / His",
+    accepted_community_agreement=True,
+)
+
+users = [root, ambassador, user, poster, announcer]
 
 roles_users = {
     role_data.root_role.id: [root],
     role_data.ambassador_role.id: [ambassador],
+    role_data.poster_role.id: [poster],
+    role_data.announcer_role.id: [announcer]
 }
 
 

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [ngClass]="{ announcement: post.announcement }">
   <mat-card-header>
     <div mat-card-avatar class="avatar"></div>
     <mat-card-title
@@ -10,10 +10,7 @@
       </ng-template></mat-card-title
     >
     <mat-card-subtitle>
-      Posted {{ timeSincePostUpdated() }} by {{ post.author_name }} from
-      <a [routerLink]="['/organization', post.organization_id]"
-        >organization name placeholder</a
-      >
+      Posted {{ timeSincePostUpdated() }} by {{ post.author_name }}
     </mat-card-subtitle>
     <div class="mat-card-actions-container">
       <mat-card-actions class="mat-card-actions-top-right">
@@ -26,15 +23,13 @@
       </mat-card-actions>
     </div>
   </mat-card-header>
-  <mat-card-content>
-    <div [innerHTML]="post.synopsis"></div>
-    <div *ngIf="post.image_url && isImageLoadable(post.image_url)">
-      <img [src]="post.image_url" />
-    </div>
-    <div
-      *ngIf="!(post.image_url && isImageLoadable(post.image_url))"
-      [innerHTML]="post.main_story"></div>
-  </mat-card-content>
+  <div [innerHTML]="post.synopsis"></div>
+  <div *ngIf="post.image_url && isImageLoadable(post.image_url)">
+    <img ngSrc="{{ post.image_url }}" width="400" height="400" />
+  </div>
+  <div
+    *ngIf="!(post.image_url && isImageLoadable(post.image_url))"
+    [innerHTML]="post.main_story"></div>
   <mat-card-actions class="mat-card-actions-bottom">
     <div class="vote-div" *ngIf="post.state === 'published'">
       <button mat-button class="vote-button">

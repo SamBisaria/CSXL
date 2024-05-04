@@ -111,6 +111,56 @@ def test_delete_post(news_svc: NewsService):
         result = news_svc.get_post(users[0], 2)
 
 
+def test_upvote_post_3_times(news_svc: NewsService):
+    news_svc.like_post(users[0], "s")
+    news_svc.like_post(users[0], "s")
+    news_svc.like_post(users[0], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.upvote == 1
+
+
+def test_upvote_post_twice(news_svc: NewsService):
+    news_svc.like_post(users[0], "s")
+    news_svc.like_post(users[0], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.upvote == 0
+
+
+def test_upvote_post_once(news_svc: NewsService):
+    news_svc.like_post(users[0], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.upvote == 1
+
+
+def test_downvote_post(news_svc: NewsService):
+    news_svc.dislike_post(users[0], "s")
+    news_svc.dislike_post(users[0], "s")
+    news_svc.dislike_post(users[0], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.downvote == 1
+
+
+def test_upvote_then_downvote(news_svc: NewsService):
+    news_svc.dislike_post(users[0], "s")
+    news_svc.like_post(users[0], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.downvote == 0
+    assert result.upvote == 1
+
+
+def test_two_users_upvote(news_svc: NewsService):
+    news_svc.like_post(users[0], "s")
+    news_svc.like_post(users[1], "s")
+
+    result = news_svc.get_post(users[0], 2)
+    assert result.upvote == 2
+
+
 def test_delete_post_not_exists(news_svc: NewsService):
     with pytest.raises(ResourceNotFoundException):
         news_svc.delete_post(users[0], 1000)
